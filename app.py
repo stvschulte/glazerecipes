@@ -1,30 +1,25 @@
 import streamlit as st
-import pathlib
+import streamlit.components.v1 as components
 
-# Configure page
+# Set page config
 st.set_page_config(
-    page_title="GlazeRecipes",
-    page_icon="🏺",
+    page_title="Glaze Recipes",
+    page_icon="🍲",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Hide Streamlit UI elements for fullscreen experience
-hide_streamlit_style = """
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
-[data-testid="stToolbar"] {visibility: hidden;}
-.st-emotion-cache-1jicfl2 {padding: 0;}
-.st-emotion-cache-uf99v {padding: 0;}
-</style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+# Hide streamlit UI elements
+st.markdown("""
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
 
-# Read and render the HTML content
-html_file = pathlib.Path(__file__).parent / "index.html"
-html_content = html_file.read_text()
+# Read and render the HTML file
+with open("index.html", "r", encoding="utf-8") as f:
+    html_content = f.read()
 
-# Render the HTML with full height
-st.components.v1.html(html_content, height=None, scrolling=True)
+components.html(html_content, height=3000, scrolling=True)
