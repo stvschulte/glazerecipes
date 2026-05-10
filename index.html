@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="GlazeRecipes sells compact 50ml and 100ml pottery glaze pots with recipe cards for small studio projects."
+    />
+    <title>GlazeRecipes</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%232d6b6b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ede3d1'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23c8551d'/%3E%3C/svg%3E" />
+    <script src="https://unpkg.com/lucide@0.335.0/dist/umd/lucide.min.js" defer></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #11100f;
+        --panel: #1b1916;
+        --panel-2: #242019;
+        --ink: #f8f1e7;
+        --muted: #c9bca8;
+        --line: rgba(248, 241, 231, 0.14);
+        --accent: #c8551d;
+        --accent-2: #86a970;
+        --teal: #2d6b6b;
+        --cream: #eee3cf;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+        --radius: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body::before {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 70%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .wrap {
+        width: min(1120px, calc(100% - 40px));
+        margin-inline: auto;
+      }
+
+      .site-header {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 50;
+        border-bottom: 1px solid transparent;
+        transition: background 180ms ease, border-color 180ms ease;
+      }
+
+      .site-header.is-scrolled {
+        background: rgba(17, 16, 15, 0.9);
+        border-color: var(--line);
+        backdrop-filter: blur(16px);
+      }
+
+      .nav {
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .brand-mark {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--teal), var(--cream));
+        box-shadow: inset 0 0 0 2px rgba(17, 16, 15, 0.55);
+      }
+
+      .brand span span {
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        color: rgba(248, 241, 231, 0.74);
+        font-size: 14px;
+      }
+
+      .nav-links a {
+        transition: color 150ms ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+
+      .btn {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 1px solid transparent;
+        border-radius: var(--radius);
+        padding: 0 18px;
+        color: var(--ink);
+        cursor: pointer;
+        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        border-color: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 38px rgba(200, 85, 29, 0.22);
+      }
+
+      .btn-primary:hover {
+        background: #d66328;
+      }
+
+      .btn-ghost {
+        background: rgba(248, 241, 231, 0.08);
+        border-color: rgba(248, 241, 231, 0.18);
+      }
+
+      .icon {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 auto;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 88svh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        isolation: isolate;
+        padding: 100px 0 64px;
+      }
+
+      .hero-media {
+        position: absolute;
+        inset: 0;
+        z-index: -3;
+      }
+
+      .hero-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center bottom;
+        transform: scale(1.04);
+      }
+
+      .hero::before {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background:
+          linear-gradient(90deg, rgba(17, 16, 15, 0.96), rgba(17, 16, 15, 0.72) 44%, rgba(17, 16, 15, 0.32)),
+          linear-gradient(0deg, rgba(17, 16, 15, 0.88), rgba(17, 16, 15, 0.08) 46%);
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 590px) minmax(280px, 1fr);
+        gap: 48px;
+        align-items: end;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        border: 1px solid rgba(134, 169, 112, 0.35);
+        border-radius: 999px;
+        padding: 7px 13px;
+        background: rgba(134, 169, 112, 0.12);
+        color: #bdd2a9;
+        font-size: 13px;
+        margin-bottom: 22px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-block: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700;
+      }
+
+      h1 {
+        max-width: 650px;
+        font-size: 72px;
+        line-height: 0.98;
+      }
+
+      h1 em {
+        color: #efb277;
+        font-style: italic;
+      }
+
+      .hero-copy {
+        max-width: 540px;
+        margin-top: 24px;
+        color: rgba(248, 241, 231, 0.78);
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .hero-proof {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        margin-top: 46px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--line);
+        max-width: 560px;
+      }
+
+      .hero-proof div {
+        background: rgba(17, 16, 15, 0.62);
+        padding: 18px;
+      }
+
+      .hero-proof strong {
+        display: block;
+        color: #efb277;
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+
+      .hero-proof span {
+        color: rgba(248, 241, 231, 0.64);
+        font-size: 13px;
+      }
+
+      .hero-swatch {
+        justify-self: end;
+        width: min(360px, 100%);
+        border: 1px solid rgba(248, 241, 231, 0.18);
+        border-radius: var(--radius);
+        background: rgba(17, 16, 15, 0.72);
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .hero-swatch img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+
+      .swatch-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .swatches {
+        display: flex;
+        gap: 8px;
+      }
+
+      .swatch-dot {
+        width: 28px;
+        height: 28px;
+        border: 1px solid rgba(248, 241, 231, 0.28);
+        border-radius: 50%;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+
+      .next-strip {
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        background: #171513;
+      }
+
+      .strip-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .strip-item {
+        padding: 22px 20px;
+        border-right: 1px solid var(--line);
+      }
+
+      .strip-item:last-child {
+        border-right: 0;
+      }
+
+      .strip-item strong {
+        display: block;
+        color: var(--accent-2);
+        font-size: 22px;
+      }
+
+      .strip-item span {
+        color: rgba(248, 241, 231, 0.62);
+        font-size: 13px;
+      }
+
+      section {
+        scroll-margin-top: 86px;
+      }
+
+      .section {
+        padding: 96px 0;
+      }
+
+      .section-alt {
+        background: #151311;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 460px) minmax(280px, 1fr);
+        gap: 40px;
+        align-items: end;
+        margin-bottom: 40px;
+      }
+
+      .section-kicker {
+        color: var(--accent);
+        font-size: 13px;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 42px;
+        line-height: 1.1;
+      }
+
+      .section-head p {
+        color: rgba(248, 241, 231, 0.66);
+        line-height: 1.75;
+        font-size: 16px;
+      }
+
+      .builder-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .glaze-option {
+        position: relative;
+        min-height: 190px;
+        border: 1px solid rgba(248, 241, 231, 0.13);
+        border-radius: var(--radius);
+        background: #211e19;
+        padding: 14px;
+        color: var(--ink);
+        cursor: pointer;
+        text-align: left;
+        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      }
+
+      .glaze-option:hover {
+        transform: translateY(-2px);
+        border-color: rgba(248, 241, 231, 0.32);
+      }
+
+      .glaze-option.is-selected {
+        border-color: var(--accent);
+        background: #29231d;
+      }
+
+      .glaze-color {
+        display: block;
+        height: 82px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 6px;
+        margin-bottom: 12px;
+      }
+
+      .glaze-option strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+
+      .glaze-option small {
+        color: rgba(248, 241, 231, 0.6);
+        line-height: 1.5;
+      }
+
+      .checkmark {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(17, 16, 15, 0.75);
+        color: transparent;
+      }
+
+      .glaze-option.is-selected .checkmark {
+        color: var(--ink);
+        background: var(--accent);
+      }
+
+      .summary {
+        position: sticky;
+        top: 88px;
+        padding: 22px;
+      }
+
+      .summary-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: start;
+        margin-bottom: 18px;
+      }
+
+      .summary-top h3 {
+        font-size: 24px;
+        line-height: 1.18;
+      }
+
+      .price {
+        color: #efb277;
+        font-size: 28px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .size-toggle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin: 20px 0;
+      }
+
+      .size-toggle button {
+        min-height: 40px;
+        border: 1px solid rgba(248, 241, 231, 0.15);
+        border-radius: var(--radius);
+        background: rgba(248, 241, 231, 0.05);
+        color: rgba(248, 241, 231, 0.75);
+        cursor: pointer;
+      }
+
+      .size-toggle button.is-active {
+        border-color: var(--accent);
+        color: var(--ink);
+        background: rgba(200, 85, 29, 0.18);
+      }
+
+      .selected-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 16px 0 22px;
+      }
+
+      .selected-list div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        border-bottom: 1px solid rgba(248, 241, 231, 0.08);
+        padding-bottom: 10px;
+        color: rgba(248, 241, 231, 0.78);
+        font-size: 14px;
+      }
+
+      .selected-list span {
+        width: 18px;
+        height: 18px;
+        border: 1px solid rgba(248, 241, 231, 0.22);
+        border-radius: 50%;
+      }
+
+      .summary-note {
+        color: rgba(248, 241, 231, 0.56);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .step {
+        min-height: 240px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px;
+        background: #1a1815;
+      }
+
+      .step-icon {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(248, 241, 231, 0.16);
+        border-radius: var(--radius);
+        background: rgba(248, 241, 231, 0.06);
+        color: #efb277;
+        margin-bottom: 24px;
+      }
+
+      .step h3 {
+        font-size: 23px;
+        margin-bottom: 12px;
+      }
+
+      .step p {
+        color: rgba(248, 241, 231, 0.62);
+        line-height: 1.68;
+      }
+
+      .cta-band {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      .cta-band::before {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        content: "";
+        background: url("assets/clay.jpg") center / cover no-repeat;
+        filter: brightness(0.45);
+      }
+
+      .cta-band::after {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        content: "";
+        background: linear-gradient(90deg, rgba(17, 16, 15, 0.96), rgba(17, 16, 15, 0.78));
+      }
+
+      .signup-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 420px;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .signup-copy h2 {
+        margin-bottom: 16px;
+      }
+
+      .signup-copy p {
+        max-width: 540px;
+        color: rgba(248, 241, 231, 0.7);
+        line-height: 1.75;
+      }
+
+      .signup-form {
+        display: grid;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(17, 16, 15, 0.74);
+        padding: 18px;
+        backdrop-filter: blur(14px);
+      }
+
+      .field {
+        position: relative;
+      }
+
+      .field svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(248, 241, 231, 0.45);
+      }
+
+      input[type="email"] {
+        width: 100%;
+        height: 48px;
+        border: 1px solid rgba(248, 241, 231, 0.18);
+        border-radius: var(--radius);
+        background: rgba(248, 241, 231, 0.08);
+        color: var(--ink);
+        padding: 0 14px 0 44px;
+        outline: none;
+      }
+
+      input[type="email"]:focus {
+        border-color: var(--accent);
+      }
+
+      .form-message {
+        min-height: 20px;
+        color: #bdd2a9;
+        font-size: 13px;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        background: #0f0e0d;
+        padding: 28px 0;
+      }
+
+      .footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: rgba(248, 241, 231, 0.5);
+        font-size: 14px;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 520ms ease, transform 520ms ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      @media (max-width: 980px) {
+        h1 {
+          font-size: 56px;
+        }
+
+        .hero-grid,
+        .section-head,
+        .builder-grid,
+        .signup-box {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-swatch {
+          justify-self: start;
+          width: 320px;
+        }
+
+        .palette {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .summary {
+          position: static;
+        }
+
+        .process {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .wrap {
+          width: min(100% - 28px, 1120px);
+        }
+
+        .nav {
+          height: 62px;
+        }
+
+        .nav-links a {
+          display: none;
+        }
+
+        .nav-links {
+          gap: 0;
+        }
+
+        .brand {
+          font-size: 21px;
+        }
+
+        .hero {
+          min-height: 84svh;
+          padding: 88px 0 34px;
+          align-items: end;
+        }
+
+        .hero-grid {
+          gap: 24px;
+        }
+
+        .hero-swatch {
+          display: none;
+        }
+
+        h1 {
+          max-width: 11ch;
+          font-size: 40px;
+          line-height: 1.04;
+        }
+
+        h2 {
+          font-size: 32px;
+        }
+
+        .hero-copy {
+          font-size: 16px;
+        }
+
+        .hero-actions .btn {
+          flex: 1 1 100%;
+        }
+
+        .hero-proof {
+          display: none;
+        }
+
+        .strip-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .strip-item {
+          border-right: 0;
+        }
+
+        .strip-item:not(:last-child) {
+          border-bottom: 1px solid var(--line);
+        }
+
+        .section {
+          padding: 72px 0;
+        }
+
+        .palette {
+          grid-template-columns: 1fr;
+        }
+
+        .glaze-option {
+          min-height: auto;
+        }
+
+        .glaze-color {
+          height: 64px;
+        }
+
+        .footer-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <div class="wrap nav">
+        <a class="brand" href="#top" aria-label="GlazeRecipes home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Glaze<span>Recipes</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#builder">Build a set</a>
+          <a href="#process">How it works</a>
+          <a href="#join" class="btn btn-ghost">
+            <i data-lucide="mail" class="icon" aria-hidden="true"></i>
+            Join
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <img src="assets/jars.jpg" alt="" />
+        </div>
+        <div class="wrap hero-grid">
+          <div class="reveal">
+            <div class="eyebrow">
+              <i data-lucide="sparkles" class="icon" aria-hidden="true"></i>
+              Early access for small studios
+            </div>
+            <h1 id="hero-title">Compact glaze pots for real studio projects.</h1>
+            <p class="hero-copy">
+              Build a 50ml or 100ml glaze set from tested recipes, receive the matching firing card, and keep your shelves clear.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#builder">
+                Build your set
+                <i data-lucide="arrow-right" class="icon" aria-hidden="true"></i>
+              </a>
+              <a class="btn btn-ghost" href="#join">
+                Join waitlist
+                <i data-lucide="mail" class="icon" aria-hidden="true"></i>
+              </a>
+            </div>
+            <div class="hero-proof" aria-label="GlazeRecipes highlights">
+              <div><strong>50ml</strong><span>Smallest jar</span></div>
+              <div><strong>5</strong><span>Curated colors</span></div>
+              <div><strong>&euro;15</strong><span>Starter set</span></div>
+            </div>
+          </div>
+
+          <aside class="hero-swatch reveal" aria-label="Featured GlazeRecipes set">
+            <img src="assets/jars.jpg" alt="Five GlazeRecipes jars and a Deep Sea Look recipe card" />
+            <div class="swatch-row">
+              <strong>Deep Sea Look</strong>
+              <div class="swatches" aria-label="Included glaze colors">
+                <span class="swatch-dot" style="background:#7a8591"></span>
+                <span class="swatch-dot" style="background:#2d6b6b"></span>
+                <span class="swatch-dot" style="background:#c4a882"></span>
+                <span class="swatch-dot" style="background:#ede3d1"></span>
+                <span class="swatch-dot" style="background:#3b5c3a"></span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <div class="next-strip" aria-label="Product facts">
+        <div class="wrap strip-grid">
+          <div class="strip-item"><strong>Less waste</strong><span>Only buy what you brush</span></div>
+          <div class="strip-item"><strong>Fresh seal</strong><span>Each pot ships ready to fire</span></div>
+          <div class="strip-item"><strong>Recipe card</strong><span>Layering and firing notes included</span></div>
+          <div class="strip-item"><strong>Letterbox</strong><span>Small sets fit standard delivery</span></div>
+        </div>
+      </div>
+
+      <section class="section" id="builder" aria-labelledby="builder-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="section-kicker">Build a set</div>
+              <h2 id="builder-title">Choose the glazes for your next firing.</h2>
+            </div>
+            <p>
+              Select any combination. The set builder updates the price and your recipe card preview immediately.
+            </p>
+          </div>
+
+          <div class="builder-grid">
+            <div class="panel palette reveal" data-palette>
+              <button class="glaze-option is-selected" type="button" data-glaze="Stormy Grey" data-color="#7a8591" data-note="Cool satin grey for quiet stoneware surfaces." aria-pressed="true">
+                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
+                <span class="glaze-color" style="background:#7a8591"></span>
+                <strong>Stormy Grey</strong>
+                <small>Soft satin, stable over speckled clay.</small>
+              </button>
+              <button class="glaze-option is-selected" type="button" data-glaze="Deep Teal" data-color="#2d6b6b" data-note="Layered teal with depth around rims and texture." aria-pressed="true">
+                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
+                <span class="glaze-color" style="background:#2d6b6b"></span>
+                <strong>Deep Teal</strong>
+                <small>Gloss depth for mugs, bowls, and carved forms.</small>
+              </button>
+              <button class="glaze-option is-selected" type="button" data-glaze="Oatmeal Beige" data-color="#c4a882" data-note="Warm oatmeal base for layering and soft edges." aria-pressed="true">
+                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
+                <span class="glaze-color" style="background:#c4a882"></span>
+                <strong>Oatmeal Beige</strong>
+                <small>Breaks warm over rims and carved details.</small>
+              </button>
+              <button class="glaze-option" type="button" data-glaze="Cream" data-color="#ede3d1" data-note="Clean cream glaze for neutral interiors and pairings." aria-pressed="false">
+                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
+                <span class="glaze-color" style="background:#ede3d1"></span>
+                <strong>Cream</strong>
+                <small>Bright neutral finish with a smooth surface.</small>
+              </button>
+              <button class="glaze-option" type="button" data-glaze="Dark Green" data-color="#3b5c3a" data-note="Deep green accent glaze for contrast and pooling." aria-pressed="false">
+                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
+                <span class="glaze-color" style="background:#3b5c3a"></span>
+                <strong>Dark Green</strong>
+                <small>Dense woodland tone with strong contrast.</small>
+              </button>
+            </div>
+
+            <aside class="panel summary reveal" aria-live="polite">
+              <div class="summary-top">
+                <h3>Your sample set</h3>
+                <div class="price" data-price>&euro;15</div>
+              </div>
+              <div class="size-toggle" role="group" aria-label="Pot size">
+                <button class="is-active" type="button" data-size="50" aria-pressed="true">50ml</button>
+                <button type="button" data-size="100" aria-pressed="false">100ml</button>
+              </div>
+              <div class="selected-list" data-selected-list></div>
+              <p class="summary-note" data-summary-note>
+                Includes a matching recipe card with layering, firing, and test tile notes.
+              </p>
+              <a class="btn btn-primary" href="#join" style="width:100%; margin-top:20px">
+                Reserve this set
+                <i data-lucide="arrow-right" class="icon" aria-hidden="true"></i>
+              </a>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="process" aria-labelledby="process-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="section-kicker">How it works</div>
+              <h2 id="process-title">A small workflow for focused making.</h2>
+            </div>
+            <p>
+              GlazeRecipes is built around short studio runs: select a palette, test the recipe card, and reorder the same look when it works.
+            </p>
+          </div>
+          <div class="process">
+            <article class="step reveal">
+              <div class="step-icon"><i data-lucide="palette" class="icon" aria-hidden="true"></i></div>
+              <h3>Pick a palette</h3>
+              <p>Start with individual pots or a curated set like Deep Sea Look.</p>
+            </article>
+            <article class="step reveal">
+              <div class="step-icon"><i data-lucide="package-check" class="icon" aria-hidden="true"></i></div>
+              <h3>Receive compact jars</h3>
+              <p>Fresh 50ml and 100ml pots arrive sealed and ready for your bench.</p>
+            </article>
+            <article class="step reveal">
+              <div class="step-icon"><i data-lucide="clipboard-check" class="icon" aria-hidden="true"></i></div>
+              <h3>Fire with notes</h3>
+              <p>Each set includes layering guidance, firing range, and a test tile plan.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta-band" id="join" aria-labelledby="join-title">
+        <div class="wrap signup-box">
+          <div class="signup-copy reveal">
+            <div class="section-kicker">Early access</div>
+            <h2 id="join-title">Get the first drop of GlazeRecipes.</h2>
+            <p>
+              Join the list for launch access, studio pricing, and the first Deep Sea Look recipe card.
+            </p>
+          </div>
+          <form class="signup-form reveal" data-signup-form>
+            <label class="field">
+              <i data-lucide="mail" class="icon" aria-hidden="true"></i>
+              <span class="sr-only">Email address</span>
+              <input type="email" name="email" autocomplete="email" placeholder="your@email.com" required />
+            </label>
+            <button class="btn btn-primary" type="submit">
+              Join waitlist
+              <i data-lucide="arrow-right" class="icon" aria-hidden="true"></i>
+            </button>
+            <div class="form-message" data-form-message></div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-row">
+        <a class="brand" href="#top" aria-label="GlazeRecipes home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Glaze<span>Recipes</span></span>
+        </a>
+        <span>&copy; <span data-year></span> GlazeRecipes. hello@glazerecipes.com</span>
+      </div>
+    </footer>
+
+    <script>
+      const header = document.querySelector("[data-header]");
+      const setHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 16);
+      window.addEventListener("scroll", setHeader, { passive: true });
+      setHeader();
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+      const palette = document.querySelector("[data-palette]");
+      const options = [...document.querySelectorAll("[data-glaze]")];
+      const list = document.querySelector("[data-selected-list]");
+      const priceEl = document.querySelector("[data-price]");
+      const noteEl = document.querySelector("[data-summary-note]");
+      const sizeButtons = [...document.querySelectorAll("[data-size]")];
+      let size = 50;
+
+      function selectedGlazes() {
+        return options.filter((option) => option.classList.contains("is-selected"));
+      }
+
+      function renderSummary() {
+        const selected = selectedGlazes();
+        const price = selected.length * (size === 50 ? 5 : 9);
+        priceEl.innerHTML = "&euro;" + price;
+        list.innerHTML = "";
+
+        selected.forEach((option) => {
+          const row = document.createElement("div");
+          row.innerHTML = `<span style="background:${option.dataset.color}"></span><strong>${option.dataset.glaze}</strong>`;
+          list.appendChild(row);
+        });
+
+        if (!selected.length) {
+          const row = document.createElement("div");
+          row.textContent = "Choose at least one glaze to reserve a set.";
+          list.appendChild(row);
+        }
+
+        const notes = selected.map((option) => option.dataset.note);
+        noteEl.textContent = notes.length
+          ? notes.join(" ")
+          : "Includes a matching recipe card with layering, firing, and test tile notes.";
+      }
+
+      palette.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-glaze]");
+        if (!button) return;
+
+        const selected = selectedGlazes();
+        if (button.classList.contains("is-selected") && selected.length === 1) return;
+
+        button.classList.toggle("is-selected");
+        button.setAttribute("aria-pressed", button.classList.contains("is-selected"));
+        renderSummary();
+      });
+
+      sizeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          size = Number(button.dataset.size);
+          sizeButtons.forEach((item) => {
+            const active = item === button;
+            item.classList.toggle("is-active", active);
+            item.setAttribute("aria-pressed", active);
+          });
+          renderSummary();
+        });
+      });
+
+      const form = document.querySelector("[data-signup-form]");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const email = new FormData(form).get("email").toString().trim();
+        if (!email) return;
+
+        localStorage.setItem("glazerecipes_waitlist_email", email);
+        form.reset();
+        document.querySelector("[data-form-message]").textContent =
+          "Thanks. You are on the waitlist for the first GlazeRecipes drop.";
+      });
+
+      document.querySelector("[data-year]").textContent = new Date().getFullYear();
+
+      window.addEventListener("load", () => {
+        if (window.lucide) {
+          window.lucide.createIcons({
+            attrs: {
+              "stroke-width": 1.8,
+            },
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
