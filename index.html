@@ -5,1158 +5,731 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="GlazeRecipes sells compact 50ml and 100ml pottery glaze pots with recipe cards for small studio projects."
+      content="GlazeRecipes helps potters build compact €29 glaze recipe sets with 50ml studio-ready pots."
     />
-    <title>GlazeRecipes</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%232d6b6b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ede3d1'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23c8551d'/%3E%3C/svg%3E" />
-    <script src="https://unpkg.com/lucide@0.335.0/dist/umd/lucide.min.js" defer></script>
+    <title>GlazeRecipes | Studio Recipe Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231C1E1F'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23B34700'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E9DDC5'/%3E%3C/svg%3E"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              studio: "#1C1E1F",
+              charcoal: "#2A2F33",
+              terracotta: "#B34700",
+              bone: "#E9DDC5",
+              sage: "#98A38F",
+              ash: "#B7AEA0",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "Georgia", "serif"],
+              sans: ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+              notes: ["Caveat", "cursive"],
+            },
+          },
+        },
+      };
+    </script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/framer-motion@11.18.2/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-      :root {
-        color-scheme: dark;
-        --bg: #11100f;
-        --panel: #1b1916;
-        --panel-2: #242019;
-        --ink: #f8f1e7;
-        --muted: #c9bca8;
-        --line: rgba(248, 241, 231, 0.14);
-        --accent: #c8551d;
-        --accent-2: #86a970;
-        --teal: #2d6b6b;
-        --cream: #eee3cf;
-        --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-        --radius: 8px;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
       html {
         scroll-behavior: smooth;
       }
 
       body {
         margin: 0;
-        min-height: 100%;
-        background: var(--bg);
-        color: var(--ink);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow-x: hidden;
+        background: #1c1e1f;
+        color: #e9ddc5;
+        font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
       }
 
-      body::before {
+      .noise::before {
         position: fixed;
         inset: 0;
-        z-index: -2;
+        z-index: 80;
+        pointer-events: none;
+        content: "";
+        opacity: 0.18;
+        mix-blend-mode: soft-light;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+        background-size: 180px 180px;
+      }
+
+      .studio-bg {
+        background:
+          radial-gradient(circle at 18% 16%, rgba(179, 71, 0, 0.2), transparent 29%),
+          radial-gradient(circle at 78% 22%, rgba(213, 159, 91, 0.11), transparent 25%),
+          radial-gradient(circle at 52% 92%, rgba(96, 88, 71, 0.28), transparent 34%),
+          linear-gradient(115deg, rgba(18, 19, 19, 0.96), rgba(35, 39, 40, 0.9)),
+          #1c1e1f;
+      }
+
+      .workbench {
+        background:
+          linear-gradient(90deg, rgba(18, 19, 19, 0.94), rgba(18, 19, 19, 0.7) 46%, rgba(18, 19, 19, 0.26)),
+          radial-gradient(circle at 72% 38%, rgba(179, 71, 0, 0.16), transparent 30%),
+          url("assets/jars.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .slate-table {
+        background:
+          radial-gradient(circle at 72% 8%, rgba(179, 71, 0, 0.18), transparent 28%),
+          linear-gradient(rgba(233, 221, 197, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(233, 221, 197, 0.03) 1px, transparent 1px),
+          #202426;
+        background-size: auto, 42px 42px, 42px 42px, auto;
+      }
+
+      .clay-panel {
+        background:
+          linear-gradient(120deg, rgba(21, 22, 22, 0.9), rgba(36, 33, 28, 0.82)),
+          url("assets/clay.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .soft-shadow {
+        box-shadow:
+          0 28px 80px rgba(0, 0, 0, 0.38),
+          0 2px 0 rgba(233, 221, 197, 0.04) inset;
+      }
+
+      .card-shadow {
+        box-shadow:
+          0 34px 90px rgba(0, 0, 0, 0.42),
+          0 0 0 1px rgba(233, 221, 197, 0.08),
+          inset 0 1px 0 rgba(233, 221, 197, 0.08);
+      }
+
+      .handwritten-line {
+        background-image: linear-gradient(rgba(233, 221, 197, 0.12) 1px, transparent 1px);
+        background-size: 100% 34px;
+      }
+
+      .image-vignette::after {
+        position: absolute;
+        inset: 0;
         content: "";
         background:
-          linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
-        background-size: 44px 44px;
-        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 70%);
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      img {
-        max-width: 100%;
-        display: block;
-      }
-
-      button,
-      input {
-        font: inherit;
-      }
-
-      .wrap {
-        width: min(1120px, calc(100% - 40px));
-        margin-inline: auto;
-      }
-
-      .site-header {
-        position: fixed;
-        inset: 0 0 auto;
-        z-index: 50;
-        border-bottom: 1px solid transparent;
-        transition: background 180ms ease, border-color 180ms ease;
-      }
-
-      .site-header.is-scrolled {
-        background: rgba(17, 16, 15, 0.9);
-        border-color: var(--line);
-        backdrop-filter: blur(16px);
-      }
-
-      .nav {
-        height: 68px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 24px;
-        font-weight: 700;
-      }
-
-      .brand-mark {
-        width: 18px;
-        height: 18px;
-        border: 2px solid var(--accent);
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--teal), var(--cream));
-        box-shadow: inset 0 0 0 2px rgba(17, 16, 15, 0.55);
-      }
-
-      .brand span span {
-        color: var(--accent);
-      }
-
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 22px;
-        color: rgba(248, 241, 231, 0.74);
-        font-size: 14px;
-      }
-
-      .nav-links a {
-        transition: color 150ms ease;
-      }
-
-      .nav-links a:hover {
-        color: var(--ink);
-      }
-
-      .btn {
-        display: inline-flex;
-        min-height: 44px;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        border: 1px solid transparent;
-        border-radius: var(--radius);
-        padding: 0 18px;
-        color: var(--ink);
-        cursor: pointer;
-        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-      }
-
-      .btn:hover {
-        transform: translateY(-1px);
-      }
-
-      .btn-primary {
-        background: var(--accent);
-        border-color: rgba(255, 255, 255, 0.08);
-        box-shadow: 0 16px 38px rgba(200, 85, 29, 0.22);
-      }
-
-      .btn-primary:hover {
-        background: #d66328;
-      }
-
-      .btn-ghost {
-        background: rgba(248, 241, 231, 0.08);
-        border-color: rgba(248, 241, 231, 0.18);
-      }
-
-      .icon {
-        width: 18px;
-        height: 18px;
-        flex: 0 0 auto;
-      }
-
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      .hero {
-        position: relative;
-        min-height: 750px;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        isolation: isolate;
-        padding: 100px 0 64px;
-      }
-
-      .hero-media {
-        position: absolute;
-        inset: 0;
-        z-index: -3;
-      }
-
-      .hero-media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center bottom;
-        transform: scale(1.04);
-      }
-
-      .hero::before {
-        position: absolute;
-        inset: 0;
-        z-index: -2;
-        content: "";
-        background:
-          linear-gradient(90deg, rgba(17, 16, 15, 0.96), rgba(17, 16, 15, 0.72) 44%, rgba(17, 16, 15, 0.32)),
-          linear-gradient(0deg, rgba(17, 16, 15, 0.88), rgba(17, 16, 15, 0.08) 46%);
-      }
-
-      .hero-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 590px) minmax(280px, 1fr);
-        gap: 48px;
-        align-items: end;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        width: fit-content;
-        border: 1px solid rgba(134, 169, 112, 0.35);
-        border-radius: 999px;
-        padding: 7px 13px;
-        background: rgba(134, 169, 112, 0.12);
-        color: #bdd2a9;
-        font-size: 13px;
-        margin-bottom: 22px;
-      }
-
-      h1,
-      h2,
-      h3,
-      p {
-        margin-block: 0;
-      }
-
-      h1,
-      h2,
-      h3 {
-        font-family: Georgia, "Times New Roman", serif;
-        font-weight: 700;
-      }
-
-      h1 {
-        max-width: 650px;
-        font-size: 72px;
-        line-height: 0.98;
-      }
-
-      h1 em {
-        color: #efb277;
-        font-style: italic;
-      }
-
-      .hero-copy {
-        max-width: 540px;
-        margin-top: 24px;
-        color: rgba(248, 241, 231, 0.78);
-        font-size: 18px;
-        line-height: 1.7;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 34px;
-      }
-
-      .hero-proof {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1px;
-        margin-top: 46px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        overflow: hidden;
-        background: var(--line);
-        max-width: 560px;
-      }
-
-      .hero-proof div {
-        background: rgba(17, 16, 15, 0.62);
-        padding: 18px;
-      }
-
-      .hero-proof strong {
-        display: block;
-        color: #efb277;
-        font-size: 22px;
-        margin-bottom: 4px;
-      }
-
-      .hero-proof span {
-        color: rgba(248, 241, 231, 0.64);
-        font-size: 13px;
-      }
-
-      .hero-swatch {
-        justify-self: end;
-        width: min(360px, 100%);
-        border: 1px solid rgba(248, 241, 231, 0.18);
-        border-radius: var(--radius);
-        background: rgba(17, 16, 15, 0.72);
-        backdrop-filter: blur(14px);
-        box-shadow: var(--shadow);
-        padding: 18px;
-      }
-
-      .hero-swatch img {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
-        border-radius: 6px;
-      }
-
-      .swatch-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin-top: 14px;
-      }
-
-      .swatches {
-        display: flex;
-        gap: 8px;
-      }
-
-      .swatch-dot {
-        width: 28px;
-        height: 28px;
-        border: 1px solid rgba(248, 241, 231, 0.28);
-        border-radius: 50%;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-      }
-
-      .next-strip {
-        border-top: 1px solid var(--line);
-        border-bottom: 1px solid var(--line);
-        background: #171513;
-      }
-
-      .strip-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .strip-item {
-        padding: 22px 20px;
-        border-right: 1px solid var(--line);
-      }
-
-      .strip-item:last-child {
-        border-right: 0;
-      }
-
-      .strip-item strong {
-        display: block;
-        color: var(--accent-2);
-        font-size: 22px;
-      }
-
-      .strip-item span {
-        color: rgba(248, 241, 231, 0.62);
-        font-size: 13px;
-      }
-
-      section {
-        scroll-margin-top: 86px;
-      }
-
-      .section {
-        padding: 96px 0;
-      }
-
-      .section-alt {
-        background: #151311;
-      }
-
-      .section-head {
-        display: grid;
-        grid-template-columns: minmax(0, 460px) minmax(280px, 1fr);
-        gap: 40px;
-        align-items: end;
-        margin-bottom: 40px;
-      }
-
-      .section-kicker {
-        color: var(--accent);
-        font-size: 13px;
-        text-transform: uppercase;
-        font-weight: 700;
-        margin-bottom: 10px;
-      }
-
-      h2 {
-        font-size: 42px;
-        line-height: 1.1;
-      }
-
-      .section-head p {
-        color: rgba(248, 241, 231, 0.66);
-        line-height: 1.75;
-        font-size: 16px;
-      }
-
-      .builder-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 360px;
-        gap: 24px;
-        align-items: start;
-      }
-
-      .panel {
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        background: var(--panel);
-        box-shadow: var(--shadow);
-      }
-
-      .palette {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        padding: 18px;
-      }
-
-      .glaze-option {
-        position: relative;
-        min-height: 190px;
-        border: 1px solid rgba(248, 241, 231, 0.13);
-        border-radius: var(--radius);
-        background: #211e19;
-        padding: 14px;
-        color: var(--ink);
-        cursor: pointer;
-        text-align: left;
-        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-      }
-
-      .glaze-option:hover {
-        transform: translateY(-2px);
-        border-color: rgba(248, 241, 231, 0.32);
-      }
-
-      .glaze-option.is-selected {
-        border-color: var(--accent);
-        background: #29231d;
-      }
-
-      .glaze-color {
-        display: block;
-        height: 82px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        border-radius: 6px;
-        margin-bottom: 12px;
-      }
-
-      .glaze-option strong {
-        display: block;
-        font-size: 15px;
-        margin-bottom: 6px;
-      }
-
-      .glaze-option small {
-        color: rgba(248, 241, 231, 0.6);
-        line-height: 1.5;
-      }
-
-      .checkmark {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 28px;
-        height: 28px;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        background: rgba(17, 16, 15, 0.75);
-        color: transparent;
-      }
-
-      .glaze-option.is-selected .checkmark {
-        color: var(--ink);
-        background: var(--accent);
-      }
-
-      .summary {
-        position: sticky;
-        top: 88px;
-        padding: 22px;
-      }
-
-      .summary-top {
-        display: flex;
-        justify-content: space-between;
-        gap: 14px;
-        align-items: start;
-        margin-bottom: 18px;
-      }
-
-      .summary-top h3 {
-        font-size: 24px;
-        line-height: 1.18;
-      }
-
-      .price {
-        color: #efb277;
-        font-size: 28px;
-        font-weight: 800;
-        white-space: nowrap;
-      }
-
-      .size-toggle {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin: 20px 0;
-      }
-
-      .size-toggle button {
-        min-height: 40px;
-        border: 1px solid rgba(248, 241, 231, 0.15);
-        border-radius: var(--radius);
-        background: rgba(248, 241, 231, 0.05);
-        color: rgba(248, 241, 231, 0.75);
-        cursor: pointer;
-      }
-
-      .size-toggle button.is-active {
-        border-color: var(--accent);
-        color: var(--ink);
-        background: rgba(200, 85, 29, 0.18);
-      }
-
-      .selected-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin: 16px 0 22px;
-      }
-
-      .selected-list div {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        border-bottom: 1px solid rgba(248, 241, 231, 0.08);
-        padding-bottom: 10px;
-        color: rgba(248, 241, 231, 0.78);
-        font-size: 14px;
-      }
-
-      .selected-list span {
-        width: 18px;
-        height: 18px;
-        border: 1px solid rgba(248, 241, 231, 0.22);
-        border-radius: 50%;
-      }
-
-      .summary-note {
-        color: rgba(248, 241, 231, 0.56);
-        font-size: 13px;
-        line-height: 1.6;
-      }
-
-      .process {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-      }
-
-      .step {
-        min-height: 240px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        padding: 22px;
-        background: #1a1815;
-      }
-
-      .step-icon {
-        width: 44px;
-        height: 44px;
-        display: grid;
-        place-items: center;
-        border: 1px solid rgba(248, 241, 231, 0.16);
-        border-radius: var(--radius);
-        background: rgba(248, 241, 231, 0.06);
-        color: #efb277;
-        margin-bottom: 24px;
-      }
-
-      .step h3 {
-        font-size: 23px;
-        margin-bottom: 12px;
-      }
-
-      .step p {
-        color: rgba(248, 241, 231, 0.62);
-        line-height: 1.68;
-      }
-
-      .cta-band {
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-      }
-
-      .cta-band::before {
-        position: absolute;
-        inset: 0;
-        z-index: -2;
-        content: "";
-        background: url("https://raw.githubusercontent.com/STVSchulte/glazerecipes/main/assets/clay.jpg") center / cover no-repeat;
-        filter: brightness(0.45);
-      }
-
-      .cta-band::after {
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        content: "";
-        background: linear-gradient(90deg, rgba(17, 16, 15, 0.96), rgba(17, 16, 15, 0.78));
-      }
-
-      .signup-box {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 420px;
-        gap: 40px;
-        align-items: center;
-      }
-
-      .signup-copy h2 {
-        margin-bottom: 16px;
-      }
-
-      .signup-copy p {
-        max-width: 540px;
-        color: rgba(248, 241, 231, 0.7);
-        line-height: 1.75;
-      }
-
-      .signup-form {
-        display: grid;
-        gap: 10px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        background: rgba(17, 16, 15, 0.74);
-        padding: 18px;
-        backdrop-filter: blur(14px);
-      }
-
-      .field {
-        position: relative;
-      }
-
-      .field svg {
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgba(248, 241, 231, 0.45);
-      }
-
-      input[type="email"] {
-        width: 100%;
-        height: 48px;
-        border: 1px solid rgba(248, 241, 231, 0.18);
-        border-radius: var(--radius);
-        background: rgba(248, 241, 231, 0.08);
-        color: var(--ink);
-        padding: 0 14px 0 44px;
-        outline: none;
-      }
-
-      input[type="email"]:focus {
-        border-color: var(--accent);
-      }
-
-      .form-message {
-        min-height: 20px;
-        color: #bdd2a9;
-        font-size: 13px;
-      }
-
-      .site-footer {
-        border-top: 1px solid var(--line);
-        background: #0f0e0d;
-        padding: 28px 0;
-      }
-
-      .footer-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        color: rgba(248, 241, 231, 0.5);
-        font-size: 14px;
-      }
-
-      .reveal {
-        opacity: 0;
-        transform: translateY(18px);
-        transition: opacity 520ms ease, transform 520ms ease;
-      }
-
-      .reveal.is-visible {
-        opacity: 1;
-        transform: none;
-      }
-
-      @media (max-width: 980px) {
-        h1 {
-          font-size: 56px;
-        }
-
-        .hero-grid,
-        .section-head,
-        .builder-grid,
-        .signup-box {
-          grid-template-columns: 1fr;
-        }
-
-        .hero-swatch {
-          justify-self: start;
-          width: 320px;
-        }
-
-        .palette {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .summary {
-          position: static;
-        }
-
-        .process {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (max-width: 720px) {
-        .wrap {
-          width: min(100% - 28px, 1120px);
-        }
-
-        .nav {
-          height: 62px;
-        }
-
-        .nav-links a {
-          display: none;
-        }
-
-        .nav-links {
-          gap: 0;
-        }
-
-        .brand {
-          font-size: 21px;
-        }
-
-        .hero {
-          min-height: 84svh;
-          padding: 88px 0 34px;
-          align-items: end;
-        }
-
-        .hero-grid {
-          gap: 24px;
-        }
-
-        .hero-swatch {
-          display: none;
-        }
-
-        h1 {
-          max-width: 11ch;
-          font-size: 40px;
-          line-height: 1.04;
-        }
-
-        h2 {
-          font-size: 32px;
-        }
-
-        .hero-copy {
-          font-size: 16px;
-        }
-
-        .hero-actions .btn {
-          flex: 1 1 100%;
-        }
-
-        .hero-proof {
-          display: none;
-        }
-
-        .strip-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .strip-item {
-          border-right: 0;
-        }
-
-        .strip-item:not(:last-child) {
-          border-bottom: 1px solid var(--line);
-        }
-
-        .section {
-          padding: 72px 0;
-        }
-
-        .palette {
-          grid-template-columns: 1fr;
-        }
-
-        .glaze-option {
-          min-height: auto;
-        }
-
-        .glaze-color {
-          height: 64px;
-        }
-
-        .footer-row {
-          align-items: flex-start;
-          flex-direction: column;
-        }
+          radial-gradient(circle at 48% 22%, transparent 24%, rgba(12, 13, 13, 0.42) 72%),
+          linear-gradient(0deg, rgba(12, 13, 13, 0.84), transparent 42%);
       }
     </style>
   </head>
-  <body>
-    <header class="site-header" data-header>
-      <div class="wrap nav">
-        <a class="brand" href="#top" aria-label="GlazeRecipes home">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Glaze<span>Recipes</span></span>
-        </a>
-        <nav class="nav-links" aria-label="Main navigation">
-          <a href="#builder">Build a set</a>
-          <a href="#process">How it works</a>
-          <a href="#join" class="btn btn-ghost">
-            <i data-lucide="mail" class="icon" aria-hidden="true"></i>
-            Join
-          </a>
-        </nav>
-      </div>
-    </header>
+  <body class="noise">
+    <div id="root"></div>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-media" aria-hidden="true">
-          <img src="https://raw.githubusercontent.com/STVSchulte/glazerecipes/main/assets/jars.jpg" alt="" />
-        </div>
-        <div class="wrap hero-grid">
-          <div class="reveal">
-            <div class="eyebrow">
-              <i data-lucide="sparkles" class="icon" aria-hidden="true"></i>
-              Early access for small studios
-            </div>
-            <h1 id="hero-title">Compact glaze pots for real studio projects.</h1>
-            <p class="hero-copy">
-              Build a 50ml or 100ml glaze set from tested recipes, receive the matching firing card, and keep your shelves clear.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="#builder">
-                Build your set
-                <i data-lucide="arrow-right" class="icon" aria-hidden="true"></i>
-              </a>
-              <a class="btn btn-ghost" href="#join">
-                Join waitlist
-                <i data-lucide="mail" class="icon" aria-hidden="true"></i>
-              </a>
-            </div>
-            <div class="hero-proof" aria-label="GlazeRecipes highlights">
-              <div><strong>50ml</strong><span>Smallest jar</span></div>
-              <div><strong>5</strong><span>Curated colors</span></div>
-              <div><strong>&euro;15</strong><span>Starter set</span></div>
-            </div>
-          </div>
+    <script type="text/babel">
+      const { useEffect, useMemo, useState } = React;
+      const {
+        AnimatePresence,
+        motion,
+        useMotionValue,
+        useTransform,
+      } = Motion;
 
-          <aside class="hero-swatch reveal" aria-label="Featured GlazeRecipes set">
-            <img src="https://raw.githubusercontent.com/STVSchulte/glazerecipes/main/assets/jars.jpg" alt="Five GlazeRecipes jars and a Deep Sea Look recipe card" />
-            <div class="swatch-row">
-              <strong>Deep Sea Look</strong>
-              <div class="swatches" aria-label="Included glaze colors">
-                <span class="swatch-dot" style="background:#7a8591"></span>
-                <span class="swatch-dot" style="background:#2d6b6b"></span>
-                <span class="swatch-dot" style="background:#c4a882"></span>
-                <span class="swatch-dot" style="background:#ede3d1"></span>
-                <span class="swatch-dot" style="background:#3b5c3a"></span>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <div class="next-strip" aria-label="Product facts">
-        <div class="wrap strip-grid">
-          <div class="strip-item"><strong>Less waste</strong><span>Only buy what you brush</span></div>
-          <div class="strip-item"><strong>Fresh seal</strong><span>Each pot ships ready to fire</span></div>
-          <div class="strip-item"><strong>Recipe card</strong><span>Layering and firing notes included</span></div>
-          <div class="strip-item"><strong>Letterbox</strong><span>Small sets fit standard delivery</span></div>
-        </div>
-      </div>
-
-      <section class="section" id="builder" aria-labelledby="builder-title">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <div>
-              <div class="section-kicker">Build a set</div>
-              <h2 id="builder-title">Choose the glazes for your next firing.</h2>
-            </div>
-            <p>
-              Select any combination. The set builder updates the price and your recipe card preview immediately.
-            </p>
-          </div>
-
-          <div class="builder-grid">
-            <div class="panel palette reveal" data-palette>
-              <button class="glaze-option is-selected" type="button" data-glaze="Stormy Grey" data-color="#7a8591" data-note="Cool satin grey for quiet stoneware surfaces." aria-pressed="true">
-                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
-                <span class="glaze-color" style="background:#7a8591"></span>
-                <strong>Stormy Grey</strong>
-                <small>Soft satin, stable over speckled clay.</small>
-              </button>
-              <button class="glaze-option is-selected" type="button" data-glaze="Deep Teal" data-color="#2d6b6b" data-note="Layered teal with depth around rims and texture." aria-pressed="true">
-                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
-                <span class="glaze-color" style="background:#2d6b6b"></span>
-                <strong>Deep Teal</strong>
-                <small>Gloss depth for mugs, bowls, and carved forms.</small>
-              </button>
-              <button class="glaze-option is-selected" type="button" data-glaze="Oatmeal Beige" data-color="#c4a882" data-note="Warm oatmeal base for layering and soft edges." aria-pressed="true">
-                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
-                <span class="glaze-color" style="background:#c4a882"></span>
-                <strong>Oatmeal Beige</strong>
-                <small>Breaks warm over rims and carved details.</small>
-              </button>
-              <button class="glaze-option" type="button" data-glaze="Cream" data-color="#ede3d1" data-note="Clean cream glaze for neutral interiors and pairings." aria-pressed="false">
-                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
-                <span class="glaze-color" style="background:#ede3d1"></span>
-                <strong>Cream</strong>
-                <small>Bright neutral finish with a smooth surface.</small>
-              </button>
-              <button class="glaze-option" type="button" data-glaze="Dark Green" data-color="#3b5c3a" data-note="Deep green accent glaze for contrast and pooling." aria-pressed="false">
-                <span class="checkmark"><i data-lucide="check" class="icon" aria-hidden="true"></i></span>
-                <span class="glaze-color" style="background:#3b5c3a"></span>
-                <strong>Dark Green</strong>
-                <small>Dense woodland tone with strong contrast.</small>
-              </button>
-            </div>
-
-            <aside class="panel summary reveal" aria-live="polite">
-              <div class="summary-top">
-                <h3>Your sample set</h3>
-                <div class="price" data-price>&euro;15</div>
-              </div>
-              <div class="size-toggle" role="group" aria-label="Pot size">
-                <button class="is-active" type="button" data-size="50" aria-pressed="true">50ml</button>
-                <button type="button" data-size="100" aria-pressed="false">100ml</button>
-              </div>
-              <div class="selected-list" data-selected-list></div>
-              <p class="summary-note" data-summary-note>
-                Includes a matching recipe card with layering, firing, and test tile notes.
-              </p>
-              <a class="btn btn-primary" href="#join" style="width:100%; margin-top:20px">
-                Reserve this set
-                <i data-lucide="arrow-right" class="icon" aria-hidden="true"></i>
-              </a>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-alt" id="process" aria-labelledby="process-title">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <div>
-              <div class="section-kicker">How it works</div>
-              <h2 id="process-title">A small workflow for focused making.</h2>
-            </div>
-            <p>
-              GlazeRecipes is built around short studio runs: select a palette, test the recipe card, and reorder the same look when it works.
-            </p>
-          </div>
-          <div class="process">
-            <article class="step reveal">
-              <div class="step-icon"><i data-lucide="palette" class="icon" aria-hidden="true"></i></div>
-              <h3>Pick a palette</h3>
-              <p>Start with individual pots or a curated set like Deep Sea Look.</p>
-            </article>
-            <article class="step reveal">
-              <div class="step-icon"><i data-lucide="package-check" class="icon" aria-hidden="true"></i></div>
-              <h3>Receive compact jars</h3>
-              <p>Fresh 50ml and 100ml pots arrive sealed and ready for your bench.</p>
-            </article>
-            <article class="step reveal">
-              <div class="step-icon"><i data-lucide="clipboard-check" class="icon" aria-hidden="true"></i></div>
-              <h3>Fire with notes</h3>
-              <p>Each set includes layering guidance, firing range, and a test tile plan.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section cta-band" id="join" aria-labelledby="join-title">
-        <div class="wrap signup-box">
-          <div class="signup-copy reveal">
-            <div class="section-kicker">Early access</div>
-            <h2 id="join-title">Get the first drop of GlazeRecipes.</h2>
-            <p>
-              Join the list for launch access, studio pricing, and the first Deep Sea Look recipe card.
-            </p>
-          </div>
-          <form class="signup-form reveal" data-signup-form>
-            <label class="field">
-              <i data-lucide="mail" class="icon" aria-hidden="true"></i>
-              <span class="sr-only">Email address</span>
-              <input type="email" name="email" autocomplete="email" placeholder="your@email.com" required />
-            </label>
-            <button class="btn btn-primary" type="submit">
-              Join waitlist
-              <i data-lucide="arrow-right" class="icon" aria-hidden="true"></i>
-            </button>
-            <div class="form-message" data-form-message></div>
-          </form>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="wrap footer-row">
-        <a class="brand" href="#top" aria-label="GlazeRecipes home">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Glaze<span>Recipes</span></span>
-        </a>
-        <span>&copy; <span data-year></span> GlazeRecipes. hello@glazerecipes.com</span>
-      </div>
-    </footer>
-
-    <script>
-      const header = document.querySelector("[data-header]");
-      const setHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 16);
-      window.addEventListener("scroll", setHeader, { passive: true });
-      setHeader();
-
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              revealObserver.unobserve(entry.target);
-            }
-          });
+      const recipes = [
+        {
+          id: "midnight-ocean",
+          look: "The Midnight Ocean Bowl",
+          title: "The Midnight Ocean Bowl",
+          image: "assets/midnight-ocean.png",
+          mood: "Deep blue melt, iron-dark edges, and a quiet blush inside the lip.",
+          clay: "Speckled stoneware, medium fire",
+          palette: [
+            { name: "Deep Teal", color: "#154E58", role: "Base" },
+            { name: "Stormy Grey", color: "#65727A", role: "Rim" },
+            { name: "Cream", color: "#D9CCB2", role: "Accent" },
+          ],
+          layers: [
+            ["Base", "2 solid coats of Deep Teal. Let dry completely."],
+            ["Layer 2", "1 coat of Stormy Grey painted only on the top rim."],
+            ["Accent", "A light splash of Cream inside."],
+            ["Firing", "Cone 6, hold for 15 mins."],
+          ],
+          note: "Best when the rim is thick enough to catch a slow blue run.",
         },
-        { threshold: 0.16 }
-      );
-      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+        {
+          id: "forest-lichen",
+          look: "Rustic Forest",
+          title: "The Forest Lichen Tumbler",
+          image: "assets/forest-ash.png",
+          mood: "Mossy olive breaks into blue rivulets over a smoky clay body.",
+          clay: "Recycled studio clay, cone 6",
+          palette: [
+            { name: "Stormy Night", color: "#4B5B68", role: "Dip" },
+            { name: "Deep Olive", color: "#8D8E45", role: "Body" },
+            { name: "Honey Flux", color: "#E5D8AA", role: "Flow" },
+          ],
+          layers: [
+            ["Base", "Quick dunk in Stormy Night. Keep it thin."],
+            ["Layer 2", "2 brushed coats of Deep Olive over the top two thirds."],
+            ["Accent", "Brush Honey Flux around the lip and high points."],
+            ["Firing", "Cone 6, natural cool. No long hold."],
+          ],
+          note: "Leave a few clay windows open. The contrast is the whole recipe.",
+        },
+        {
+          id: "honey-iron",
+          look: "Desert Sand",
+          title: "The Honey Iron Cup",
+          image: "assets/honey-iron.png",
+          mood: "Bone glaze, honey crystals, and warm iron pooling around the lip.",
+          clay: "White mid-fire clay, carved lower band",
+          palette: [
+            { name: "Raw Sienna", color: "#7A4B2F", role: "Lower" },
+            { name: "Micro Pearl", color: "#E7DDC2", role: "Upper" },
+            { name: "Ancient Jasper", color: "#8C4B2E", role: "Rim" },
+          ],
+          layers: [
+            ["Base", "3 coats of Raw Sienna on the lower half. Sgraffito while damp."],
+            ["Layer 2", "3 thick coats of Micro Pearl on the upper half."],
+            ["Accent", "1 careful rim coat of Ancient Jasper, interior only."],
+            ["Firing", "Cone 6, hold for 15 mins."],
+          ],
+          note: "Keep the pearl glaze thick. Thin coats lose the snowy bloom.",
+        },
+      ];
 
-      const palette = document.querySelector("[data-palette]");
-      const options = [...document.querySelectorAll("[data-glaze]")];
-      const list = document.querySelector("[data-selected-list]");
-      const priceEl = document.querySelector("[data-price]");
-      const noteEl = document.querySelector("[data-summary-note]");
-      const sizeButtons = [...document.querySelectorAll("[data-size]")];
-      let size = 50;
-
-      function selectedGlazes() {
-        return options.filter((option) => option.classList.contains("is-selected"));
+      function IconX(props) {
+        return (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        );
       }
 
-      function renderSummary() {
-        const selected = selectedGlazes();
-        const price = selected.length * (size === 50 ? 5 : 9);
-        priceEl.innerHTML = "&euro;" + price;
-        list.innerHTML = "";
-
-        selected.forEach((option) => {
-          const row = document.createElement("div");
-          row.innerHTML = `<span style="background:${option.dataset.color}"></span><strong>${option.dataset.glaze}</strong>`;
-          list.appendChild(row);
-        });
-
-        if (!selected.length) {
-          const row = document.createElement("div");
-          row.textContent = "Choose at least one glaze to reserve a set.";
-          list.appendChild(row);
-        }
-
-        const notes = selected.map((option) => option.dataset.note);
-        noteEl.textContent = notes.length
-          ? notes.join(" ")
-          : "Includes a matching recipe card with layering, firing, and test tile notes.";
+      function IconHeart(props) {
+        return (
+          <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+            <path d="M12 21s-7.1-4.32-9.6-8.38C.28 9.18 1.82 5 5.73 5c2.13 0 3.5 1.19 4.27 2.26C10.77 6.19 12.14 5 14.27 5c3.91 0 5.45 4.18 3.33 7.62C19.1 16.68 12 21 12 21Z" />
+          </svg>
+        );
       }
 
-      palette.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-glaze]");
-        if (!button) return;
+      function IconArrow(props) {
+        return (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        );
+      }
 
-        const selected = selectedGlazes();
-        if (button.classList.contains("is-selected") && selected.length === 1) return;
+      function IconFlame(props) {
+        return (
+          <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+            <path d="M13.7 2.6c.4 2.7-.8 4.3-2.2 5.7-1.5 1.6-3.2 3.2-2.3 6 .6-.9 1.3-1.6 2.2-2.3 3.4-2.5 2.8-6.1 2.3-9.4ZM6.2 12.2C3.7 15.4 5.5 22 12 22c5.3 0 8-3.1 8-7.2 0-3.7-2.1-6.6-5-8.9.3 2.8-.3 5.5-3 7.6-1.2 1-2.1 2-2.2 3.8-1.8-.8-3-2.6-3.6-5.1Z" />
+          </svg>
+        );
+      }
 
-        button.classList.toggle("is-selected");
-        button.setAttribute("aria-pressed", button.classList.contains("is-selected"));
-        renderSummary();
-      });
+      function PotTag({ pot }) {
+        return (
+          <div className="flex items-center gap-3 rounded-2xl border border-[#E9DDC5]/12 bg-[#2A2F33]/55 p-3">
+            <span
+              className="h-11 w-11 rounded-full border border-[#E9DDC5]/18 shadow-[inset_0_8px_14px_rgba(255,255,255,.13),inset_0_-8px_16px_rgba(0,0,0,.28)]"
+              style={{ background: pot.color }}
+            />
+            <span>
+              <span className="block text-xs uppercase tracking-[0.18em] text-[#98A38F]">{pot.role}</span>
+              <strong className="block text-sm text-[#E9DDC5]">{pot.name}</strong>
+            </span>
+          </div>
+        );
+      }
 
-      sizeButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          size = Number(button.dataset.size);
-          sizeButtons.forEach((item) => {
-            const active = item === button;
-            item.classList.toggle("is-active", active);
-            item.setAttribute("aria-pressed", active);
-          });
-          renderSummary();
-        });
-      });
+      function RecipeCard({ recipe, index, active, onSwipe, onOpen }) {
+        const x = useMotionValue(0);
+        const rotate = useTransform(x, [-240, 240], [-12, 12]);
+        const opacity = useTransform(x, [-260, -120, 0, 120, 260], [0.86, 0.96, 1, 0.96, 0.86]);
+        const yesOpacity = useTransform(x, [30, 150], [0, 1]);
+        const noOpacity = useTransform(x, [-150, -30], [1, 0]);
+        const tint = useTransform(
+          x,
+          [-220, 0, 220],
+          ["rgba(99,33,24,.44)", "rgba(0,0,0,0)", "rgba(59,84,60,.4)"]
+        );
 
-      const form = document.querySelector("[data-signup-form]");
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const email = new FormData(form).get("email").toString().trim();
-        if (!email) return;
+        return (
+          <motion.article
+            layoutId={`recipe-card-${recipe.id}`}
+            className="absolute inset-0 cursor-grab overflow-hidden rounded-[1.75rem] border border-[#E9DDC5]/14 bg-[#171A1A] card-shadow active:cursor-grabbing"
+            style={{
+              x,
+              rotate: active ? rotate : index % 2 ? -2.2 : 2.2,
+              opacity,
+              zIndex: 20 - index,
+              scale: active ? 1 : 1 - index * 0.045,
+              y: index * 15,
+            }}
+            drag={active ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.82}
+            onTap={() => active && onOpen(recipe)}
+            onClick={() => active && onOpen(recipe)}
+            onDragEnd={(_, info) => {
+              if (info.offset.x > 120 || info.velocity.x > 720) onSwipe("right");
+              if (info.offset.x < -120 || info.velocity.x < -720) onSwipe("left");
+            }}
+            initial={{ scale: 0.96, y: 24, opacity: 0 }}
+            animate={{ scale: active ? 1 : 1 - index * 0.045, y: index * 15, opacity: 1 }}
+            exit={{
+              x: x.get() >= 0 ? 540 : -540,
+              rotate: x.get() >= 0 ? 17 : -17,
+              opacity: 0,
+              transition: { duration: 0.28 },
+            }}
+            transition={{ type: "spring", stiffness: 245, damping: 28 }}
+          >
+            <div className="image-vignette absolute inset-0">
+              <motion.img
+                layoutId={`recipe-image-${recipe.id}`}
+                src={recipe.image}
+                alt={recipe.title}
+                className="h-full w-full object-cover"
+                draggable="false"
+              />
+            </div>
+            {active && (
+              <>
+                <motion.div className="absolute inset-0" style={{ backgroundColor: tint }} />
+                <motion.div
+                  className="absolute left-5 top-5 rounded-full border border-[#DFA08F]/40 bg-[#4A211B]/68 px-5 py-2 text-sm font-bold uppercase tracking-[0.22em] text-[#F0C4B7]"
+                  style={{ opacity: noOpacity }}
+                >
+                  Skip
+                </motion.div>
+                <motion.div
+                  className="absolute right-5 top-5 rounded-full border border-[#B5C2A4]/42 bg-[#243A2A]/70 px-5 py-2 text-sm font-bold uppercase tracking-[0.22em] text-[#D8E2C8]"
+                  style={{ opacity: yesOpacity }}
+                >
+                  Love
+                </motion.div>
 
-        localStorage.setItem("glazerecipes_waitlist_email", email);
-        form.reset();
-        document.querySelector("[data-form-message]").textContent =
-          "Thanks. You are on the waitlist for the first GlazeRecipes drop.";
-      });
+                <div className="absolute inset-x-0 bottom-0 p-6 pt-28">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-[#D79B62]">
+                    Tap for recipe profile
+                  </p>
+                  <h3 className="font-serif text-4xl leading-none text-[#F0E7D2]">{recipe.look}</h3>
+                  <p className="mt-3 max-w-sm text-sm leading-6 text-[#D2C7B5]/82">{recipe.mood}</p>
+                  <div className="mt-5 grid gap-2 sm:grid-cols-3">
+                    {recipe.palette.map((pot) => (
+                      <div key={pot.name} className="rounded-xl border border-[#E9DDC5]/12 bg-[#101211]/52 px-3 py-2 backdrop-blur">
+                        <span className="mb-1 block h-3 rounded-full" style={{ background: pot.color }} />
+                        <span className="text-xs text-[#E9DDC5]/84">{pot.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </motion.article>
+        );
+      }
 
-      document.querySelector("[data-year]").textContent = new Date().getFullYear();
+      function ExpandedRecipe({ recipe, onClose, onAdd }) {
+        useEffect(() => {
+          const previous = document.body.style.overflow;
+          document.body.style.overflow = "hidden";
+          return () => {
+            document.body.style.overflow = previous;
+          };
+        }, []);
 
-      window.addEventListener("load", () => {
-        if (window.lucide) {
-          window.lucide.createIcons({
-            attrs: {
-              "stroke-width": 1.8,
-            },
-          });
+        return (
+          <motion.div
+            className="fixed inset-0 z-[70] overflow-y-auto bg-[#0F1111]/86 px-4 py-5 backdrop-blur-md md:px-8 md:py-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button
+              type="button"
+              onClick={onClose}
+              className="fixed right-5 top-5 z-[80] grid h-12 w-12 place-items-center rounded-full border border-[#E9DDC5]/16 bg-[#1C1E1F]/86 text-[#E9DDC5] shadow-[0_20px_60px_rgba(0,0,0,.45)]"
+              aria-label="Close recipe profile"
+            >
+              <IconX className="h-6 w-6" />
+            </button>
+
+            <motion.article
+              layoutId={`recipe-card-${recipe.id}`}
+              className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[#E9DDC5]/14 bg-[#1A1C1C] soft-shadow"
+            >
+              <div className="grid lg:grid-cols-[1.05fr_.95fr]">
+                <div className="relative min-h-[360px] lg:min-h-[760px]">
+                  <motion.img
+                    layoutId={`recipe-image-${recipe.id}`}
+                    src={recipe.image}
+                    alt={recipe.title}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(18,19,19,.78),transparent_45%),radial-gradient(circle_at_45%_22%,transparent_20%,rgba(18,19,19,.44)_78%)]" />
+                  <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#D79B62]">Expanded Recipe Profile</p>
+                    <h2 className="mt-3 max-w-xl font-serif text-5xl leading-[.96] text-[#F0E7D2] md:text-7xl">
+                      {recipe.title}
+                    </h2>
+                    <p className="mt-5 max-w-lg text-lg leading-8 text-[#D6CBB9]/82">{recipe.mood}</p>
+                  </div>
+                </div>
+
+                <div className="slate-table p-6 md:p-8 lg:p-10">
+                  <div className="rounded-[1.5rem] border border-[#E9DDC5]/12 bg-[#111313]/58 p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#98A38F]">The 3 glaze pots</p>
+                    <div className="mt-4 grid gap-3">
+                      {recipe.palette.map((pot) => (
+                        <PotTag key={pot.name} pot={pot} />
+                      ))}
+                    </div>
+                    <div className="mt-5 rounded-2xl border border-[#B34700]/25 bg-[#B34700]/10 p-4 text-sm leading-6 text-[#D8CCB8]">
+                      <strong className="text-[#F0E7D2]">€29 Base Set:</strong> 3 colors, 50ml each. Extra pots are €5.
+                    </div>
+                  </div>
+
+                  <section className="mt-6 rounded-[1.5rem] border border-[#E9DDC5]/12 bg-[#211F1A]/66 p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#98A38F]">The Secret Recipe</p>
+                    <p className="mt-1 font-notes text-3xl font-bold text-[#D79B62]">Layering Notes</p>
+                    <p className="mt-1 text-sm text-[#AFA797]">Clay body: {recipe.clay}</p>
+                    <div className="handwritten-line mt-5 space-y-4">
+                      {recipe.layers.map(([label, copy]) => (
+                        <div key={label} className="grid grid-cols-[86px_1fr] gap-4 border-b border-[#E9DDC5]/10 pb-4 last:border-b-0">
+                          <span className="font-notes text-2xl text-[#D79B62]">{label}</span>
+                          <p className="font-notes text-2xl leading-8 text-[#EFE3CA]">{copy}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-5 rounded-2xl border border-[#E9DDC5]/10 bg-[#151615]/60 p-4">
+                      <p className="font-notes text-2xl leading-7 text-[#D6CBB9]">{recipe.note}</p>
+                    </div>
+                  </section>
+
+                  <button
+                    type="button"
+                    onClick={() => onAdd(recipe)}
+                    className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#B34700] px-6 py-5 font-bold text-[#FFF3DE] shadow-[0_22px_60px_rgba(107,43,0,.34)] transition hover:-translate-y-0.5 hover:bg-[#C4550B]"
+                  >
+                    Add this €29 Set to Cart/Waitlist
+                    <IconArrow className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            </motion.article>
+          </motion.div>
+        );
+      }
+
+      function SwipeDeck() {
+        const [cards, setCards] = useState(recipes);
+        const [expanded, setExpanded] = useState(null);
+        const [toast, setToast] = useState("");
+        const [loved, setLoved] = useState([]);
+        const topCard = cards[0];
+
+        function showToast(message) {
+          setToast(message);
+          window.clearTimeout(showToast.timer);
+          showToast.timer = window.setTimeout(() => setToast(""), 2400);
         }
-      });
+
+        function swipe(direction) {
+          if (!topCard) {
+            setCards(recipes);
+            showToast("Deck refreshed. Pick another recipe look.");
+            return;
+          }
+
+          if (direction === "right") {
+            setLoved((items) => [...items, topCard.look]);
+            showToast("Added 3 colors to your €29 Base Set!");
+          } else {
+            showToast("Skipped. Next recipe ready.");
+          }
+
+          setCards((items) => items.slice(1));
+        }
+
+        function addRecipe(recipe) {
+          setLoved((items) => (items.includes(recipe.look) ? items : [...items, recipe.look]));
+          setExpanded(null);
+          showToast("Added 3 colors to your €29 Base Set!");
+        }
+
+        return (
+          <section id="swipe-deck" className="slate-table relative overflow-hidden px-5 py-24 text-[#E9DDC5] md:px-8">
+            <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[.88fr_1.12fr]">
+              <div>
+                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#D79B62]">
+                  Recipe Swipe Deck
+                </p>
+                <h2 className="font-serif text-5xl leading-[.98] text-[#F0E7D2] md:text-6xl">
+                  Swipe through real glaze profiles from the studio bench.
+                </h2>
+                <p className="mt-6 max-w-xl text-lg leading-8 text-[#C9BEAA]/78">
+                  Swipe right to save a look. Tap the card to open its full recipe profile, including the three pots, layering order, and firing notes.
+                </p>
+                <div className="mt-8 rounded-2xl border border-[#E9DDC5]/14 bg-[#101211]/46 p-5 text-sm leading-6 text-[#C9BEAA]/78 backdrop-blur">
+                  <strong className="block text-[#F0E7D2]">Pricing stays simple:</strong>
+                  €29 Base Set includes 3 colors, 50ml each. Add extra pots for €5 per color.
+                </div>
+                {loved.length > 0 && (
+                  <p className="mt-4 max-w-xl text-sm leading-6 text-[#AEB7A2]">
+                    Saved to your waitlist set: <span className="text-[#D79B62]">{loved.join(", ")}</span>
+                  </p>
+                )}
+              </div>
+
+              <div className="mx-auto w-full max-w-[430px]">
+                <div className="relative h-[610px]">
+                  <AnimatePresence>
+                    {cards.slice(0, 3).map((recipe, index) => (
+                      <RecipeCard
+                        key={recipe.id}
+                        recipe={recipe}
+                        index={index}
+                        active={index === 0}
+                        onSwipe={swipe}
+                        onOpen={setExpanded}
+                      />
+                    ))}
+                  </AnimatePresence>
+
+                  {!cards.length && (
+                    <div className="absolute inset-0 grid place-items-center rounded-[1.75rem] border border-[#E9DDC5]/14 bg-[#171A1A] p-8 text-center card-shadow">
+                      <div>
+                        <h3 className="font-serif text-4xl text-[#F0E7D2]">All recipes reviewed.</h3>
+                        <p className="mt-3 text-[#C9BEAA]/72">Refresh the bench stack or jump to the waitlist.</p>
+                        <button
+                          type="button"
+                          onClick={() => setCards(recipes)}
+                          className="mt-7 rounded-2xl bg-[#B34700] px-6 py-3 font-semibold text-[#FFF3DE] shadow-[0_18px_48px_rgba(79,32,0,.38)]"
+                        >
+                          Refresh deck
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-8 flex items-center justify-center gap-5">
+                  <button
+                    type="button"
+                    onClick={() => swipe("left")}
+                    className="grid h-16 w-16 place-items-center rounded-full border border-[#E9DDC5]/16 bg-[#1C1E1F]/66 text-[#D8CCB8] shadow-[0_18px_54px_rgba(0,0,0,.35)] transition hover:-translate-y-1 hover:bg-[#2B2D2C]"
+                    aria-label="Skip recipe"
+                  >
+                    <IconX className="h-7 w-7" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => swipe("right")}
+                    className="grid h-20 w-20 place-items-center rounded-full bg-[#B34700] text-[#FFF3DE] shadow-[0_22px_62px_rgba(107,43,0,.34)] transition hover:-translate-y-1 hover:bg-[#C4550B]"
+                    aria-label="Love recipe"
+                  >
+                    <IconHeart className="h-8 w-8" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <AnimatePresence>
+              {expanded && (
+                <ExpandedRecipe
+                  key={expanded.id}
+                  recipe={expanded}
+                  onClose={() => setExpanded(null)}
+                  onAdd={addRecipe}
+                />
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {toast && (
+                <motion.div
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 18 }}
+                  className="fixed bottom-6 left-1/2 z-[90] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-[#E9DDC5]/14 bg-[#111313]/92 px-5 py-4 text-center font-semibold text-[#F0E7D2] shadow-[0_22px_70px_rgba(0,0,0,.45)] backdrop-blur"
+                >
+                  {toast}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </section>
+        );
+      }
+
+      function GlazeRecipesLanding() {
+        const [email, setEmail] = useState("");
+        const [submitted, setSubmitted] = useState(false);
+
+        const heroStats = useMemo(
+          () => [
+            ["€29", "Base Set"],
+            ["3", "50ml pots"],
+            ["€5", "extra pot"],
+          ],
+          []
+        );
+
+        useEffect(() => {
+          if (!window.location.hash) return;
+          window.requestAnimationFrame(() => {
+            document.querySelector(window.location.hash)?.scrollIntoView();
+          });
+        }, []);
+
+        function handleSubmit(event) {
+          event.preventDefault();
+          if (!email.trim()) return;
+          localStorage.setItem("glazerecipes_waitlist_email", email.trim());
+          setSubmitted(true);
+          setEmail("");
+        }
+
+        return (
+          <main className="min-h-screen bg-[#1C1E1F] text-[#E9DDC5]">
+            <section className="workbench relative isolate overflow-hidden px-5 py-20 md:px-8 md:py-28">
+              <nav className="mx-auto mb-20 flex max-w-6xl items-center justify-between">
+                <a href="#" className="font-serif text-2xl font-bold tracking-tight text-[#F0E7D2]">
+                  Glaze<span className="text-[#B34700]">Recipes</span>
+                </a>
+                <a
+                  href="#waitlist"
+                  className="hidden rounded-full border border-[#E9DDC5]/16 bg-[#1C1E1F]/54 px-5 py-2.5 text-sm font-semibold text-[#E9DDC5] backdrop-blur transition hover:bg-[#2C2D2B] sm:inline-flex"
+                >
+                  Join waitlist
+                </a>
+              </nav>
+
+              <div className="mx-auto grid max-w-6xl items-end gap-12 lg:grid-cols-[1.08fr_.92fr]">
+                <div>
+                  <p className="mb-5 inline-flex rounded-full border border-[#D79B62]/30 bg-[#4B2814]/38 px-4 py-2 text-sm font-semibold text-[#E5B177]">
+                    Moody glaze recipes for small studio runs
+                  </p>
+                  <h1 className="max-w-[10ch] font-serif text-[46px] leading-[.94] tracking-tight text-[#F0E7D2] sm:max-w-4xl sm:text-6xl md:text-8xl">
+                    Stop paying €80 for glazes you'll never finish.
+                  </h1>
+                  <p className="mt-7 max-w-[318px] text-lg leading-8 text-[#D6CBB9]/86 sm:max-w-2xl sm:text-xl sm:leading-9">
+                    Build a €29 Base Set. Pick 3 colors, 50ml each. Buy what you brush. Stop wasting €80 on giant jars that dry out.
+                  </p>
+                  <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                    <a
+                      href="#swipe-deck"
+                      className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#B34700] px-7 py-4 font-bold text-[#FFF3DE] shadow-[0_22px_62px_rgba(107,43,0,.34)] transition hover:-translate-y-1 hover:bg-[#C4550B]"
+                    >
+                      Open the recipe deck <IconArrow className="h-5 w-5" />
+                    </a>
+                    <a
+                      href="#how-it-works"
+                      className="inline-flex items-center justify-center rounded-2xl border border-[#E9DDC5]/16 bg-[#1C1E1F]/54 px-7 py-4 font-bold text-[#E9DDC5] backdrop-blur transition hover:-translate-y-1 hover:bg-[#2C2D2B]"
+                    >
+                      How it works
+                    </a>
+                  </div>
+                  <div className="mt-12 grid max-w-xl grid-cols-1 overflow-hidden rounded-2xl border border-[#E9DDC5]/16 bg-[#101211]/44 backdrop-blur sm:grid-cols-3">
+                    {heroStats.map(([value, label]) => (
+                      <div key={label} className="border-b border-[#E9DDC5]/10 p-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+                        <strong className="block text-2xl text-[#D79B62]">{value}</strong>
+                        <span className="text-sm text-[#C9BEAA]/70">{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[2rem] border border-[#E9DDC5]/14 bg-[#161716]/66 p-5 soft-shadow backdrop-blur">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem]">
+                    <img src="assets/midnight-ocean.png" alt="Midnight Ocean glaze bowl" className="h-full w-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#101211]/88 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 p-6">
+                      <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#D79B62]">First bench stack</p>
+                      <h2 className="mt-3 font-serif text-4xl text-[#F0E7D2]">Midnight Ocean</h2>
+                      <p className="mt-3 max-w-sm text-[#D6CBB9]/78">
+                        Three studio-ready pots plus the recipe card for layering, firing, and test tiles.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <SwipeDeck />
+
+            <section id="how-it-works" className="bg-[#171918] px-5 py-24 md:px-8">
+              <div className="mx-auto max-w-6xl">
+                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#D79B62]">How it works</p>
+                <h2 className="max-w-3xl font-serif text-5xl leading-tight text-[#F0E7D2] md:text-6xl">
+                  From swipe to kiln shelf in three grounded steps.
+                </h2>
+                <div className="mt-12 grid gap-5 md:grid-cols-3">
+                  {[
+                    ["01", "Swipe & build your 3-color set.", "Open profiles, save the looks you love, and start with a €29 Base Set."],
+                    ["02", "Receive studio-ready 50ml pots.", "Secure, studio-ready packaging keeps every pot sealed and bench-ready."],
+                    ["03", "Fire with the included recipe card.", "Layering order, firing notes, and test tile prompts come with each set."],
+                  ].map(([number, title, copy]) => (
+                    <article key={number} className="rounded-[1.5rem] border border-[#E9DDC5]/12 bg-[#23231F]/42 p-7 soft-shadow">
+                      <div className="mb-10 flex h-11 w-11 items-center justify-center rounded-full bg-[#B34700]/16 text-sm font-bold text-[#D79B62]">{number}</div>
+                      <h3 className="font-serif text-3xl leading-tight text-[#F0E7D2]">{title}</h3>
+                      <p className="mt-4 leading-7 text-[#C9BEAA]/72">{copy}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section id="waitlist" className="clay-panel relative isolate overflow-hidden px-5 py-24 md:px-8">
+              <div className="mx-auto grid max-w-5xl items-center gap-10 rounded-[2rem] border border-[#E9DDC5]/14 bg-[#111313]/76 p-8 soft-shadow backdrop-blur md:grid-cols-[1fr_420px] md:p-10">
+                <div>
+                  <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#D79B62]">Early access</p>
+                  <h2 className="font-serif text-5xl leading-tight text-[#F0E7D2]">Ready to glaze smarter?</h2>
+                  <p className="mt-5 text-lg leading-8 text-[#D6CBB9]/76">
+                    Join the waitlist. Early members get priority access and a free 4th color in their first €29 Base Set.
+                  </p>
+                </div>
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="your@email.com"
+                    className="h-14 w-full rounded-2xl border border-[#E9DDC5]/14 bg-[#1C1E1F]/72 px-5 text-[#F0E7D2] outline-none placeholder:text-[#9F9788] focus:border-[#B34700]"
+                  />
+                  <button
+                    type="submit"
+                    className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[#B34700] font-bold text-[#FFF3DE] transition hover:bg-[#C4550B]"
+                  >
+                    Join waitlist <IconArrow className="h-5 w-5" />
+                  </button>
+                  <p className="min-h-6 text-center text-sm font-semibold text-[#AEB7A2]">
+                    {submitted ? "You're on the waitlist. Your free 4th color is reserved." : ""}
+                  </p>
+                </form>
+              </div>
+            </section>
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<GlazeRecipesLanding />);
     </script>
   </body>
 </html>
