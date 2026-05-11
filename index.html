@@ -908,6 +908,29 @@
           setEmail("");
         }
 
+        function scrollToSwipeDeck() {
+          const target = document.getElementById("swipe-deck");
+          if (!target) return;
+
+          const offset = target.getBoundingClientRect().top;
+
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+
+          try {
+            if (window.parent && window.parent !== window) {
+              window.parent.scrollBy({
+                top: offset,
+                behavior: "smooth",
+              });
+            }
+          } catch (error) {
+            window.parent?.postMessage({ type: "glazerecipes-scroll", offset }, "*");
+          }
+        }
+
         return (
           <main className="min-h-screen overflow-x-hidden bg-[#FDFBF7] text-[#2D2825]">
             <section className="relative isolate min-h-screen overflow-hidden bg-[#FDFBF7] px-5 py-8 text-[#2D2825] md:px-8 md:py-10">
@@ -940,12 +963,13 @@
                     ))}
                   </div>
                   <div className="mt-8 flex w-full max-w-[260px]">
-                    <a
-                      href="#swipe-deck"
+                    <button
+                      type="button"
+                      onClick={scrollToSwipeDeck}
                       className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
                     >
                       Start swiping <IconArrow className="h-5 w-5" />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
