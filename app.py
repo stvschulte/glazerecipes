@@ -17,18 +17,24 @@ st.set_page_config(
 hide_streamlit_style = """
     <style>
     :root {
-        --glazerecipes-frame-height: 4550px;
+        --glazerecipes-frame-height: 4200px;
     }
 
     @media (max-width: 1024px) {
         :root {
-            --glazerecipes-frame-height: 5800px;
+            --glazerecipes-frame-height: 4350px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        :root {
+            --glazerecipes-frame-height: 5650px;
         }
     }
 
     @media (max-width: 640px) {
         :root {
-            --glazerecipes-frame-height: 6400px;
+            --glazerecipes-frame-height: 6200px;
         }
     }
 
@@ -154,4 +160,4 @@ for public_path, local_path, mime_type in [
 # Use components.html to render the full page.
 # The outer CSS above controls responsive iframe height so the page stops
 # shortly after the Early Access section instead of leaving a huge blank tail.
-components.html(html_content, height=4550, scrolling=False)
+components.html(html_content, height=4200, scrolling=False)

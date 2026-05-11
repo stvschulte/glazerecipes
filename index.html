@@ -53,9 +53,18 @@
       body {
         margin: 0;
         overflow-x: hidden;
+        overscroll-behavior-x: none;
         background: #fdfbf7;
         color: #2d2825;
         font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+      }
+
+      #root {
+        overflow-x: hidden;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       .paper-grain::before {
@@ -328,7 +337,7 @@
         );
       }
 
-      function RecipeCard({ recipe, index, active, onSwipe }) {
+      function RecipeCard({ recipe, index, active, onSwipe, exitDirection }) {
         const x = useMotionValue(0);
         const rotate = useTransform(x, [-240, 240], [-11, 11]);
         const opacity = useTransform(x, [-260, -120, 0, 120, 260], [0.88, 0.96, 1, 0.96, 0.88]);
@@ -344,7 +353,21 @@
           <motion.article
             layoutId={`recipe-card-${recipe.id}`}
             className="absolute inset-0 cursor-grab overflow-hidden rounded-[1.5rem] border border-[#E3D1B8] bg-[#F4E9D8] card-shadow active:cursor-grabbing"
+            custom={exitDirection}
+            drag={active ? "x" : false}
+            dragDirectionLock
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.82}
+            variants={{
+              exit: (direction) => ({
+                x: direction === "left" ? -1000 : 1000,
+                rotate: direction === "left" ? -18 : 18,
+                opacity: 0,
+                transition: { duration: 0.28 },
+              }),
+            }}
             style={{
+              touchAction: active ? "pan-y" : "auto",
               x,
               rotate: active ? rotate : index % 2 ? -1.8 : 1.8,
               opacity,
@@ -352,9 +375,6 @@
               scale: active ? 1 : 1 - index * 0.045,
               y: index * 15,
             }}
-            drag={active ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.82}
             onDragEnd={(_, info) => {
               if (info.offset.x > 120 || info.velocity.x > 720) {
                 onSwipe("right");
@@ -364,12 +384,7 @@
             }}
             initial={{ scale: 0.96, y: 24, opacity: 0 }}
             animate={{ scale: active ? 1 : 1 - index * 0.045, y: index * 15, opacity: 1 }}
-            exit={{
-              x: x.get() >= 0 ? 540 : -540,
-              rotate: x.get() >= 0 ? 17 : -17,
-              opacity: 0,
-              transition: { duration: 0.28 },
-            }}
+            exit="exit"
             transition={{ type: "spring", stiffness: 245, damping: 28 }}
           >
             <div className="photo-vignette absolute inset-0">
@@ -511,6 +526,7 @@
         const [expanded, setExpanded] = useState(null);
         const [toast, setToast] = useState("");
         const [saved, setSaved] = useState([]);
+        const [exitDirection, setExitDirection] = useState("right");
         const topCard = cards[0];
 
         function showToast(message) {
@@ -520,6 +536,8 @@
         }
 
         function swipe(direction) {
+          setExitDirection(direction);
+
           if (!topCard) {
             setCards(recipes);
             showToast("Fresh ideas on the bench.");
@@ -568,13 +586,14 @@
 
               <div className="mx-auto w-full max-w-[430px]">
                 <div className="relative h-[610px]">
-                  <AnimatePresence>
+                  <AnimatePresence custom={exitDirection}>
                     {cards.slice(0, 3).map((recipe, index) => (
                       <RecipeCard
                         key={recipe.id}
                         recipe={recipe}
                         index={index}
                         active={index === 0}
+                        exitDirection={exitDirection}
                         onSwipe={swipe}
                       />
                     ))}
@@ -691,52 +710,54 @@
           <section id="build-set" className="relative overflow-hidden bg-[#FDFBF7] px-4 py-24 text-[#2D2825] md:px-8">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(217,108,74,.1),transparent_28%),radial-gradient(circle_at_84%_68%,rgba(138,154,134,.13),transparent_30%)]" />
             <div className="relative mx-auto min-w-0 max-w-6xl">
-              <div className="max-w-2xl min-w-0">
-                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">Build your own set</p>
-                <h2 className="whitespace-normal break-words font-serif text-3xl leading-tight md:text-5xl">Build a set yourself.</h2>
-                <p className="mt-5 max-w-xl text-lg leading-8 text-[#665950]">
-                  Start with 3 jars for €29. Every extra 50ml pot adds €5.
-                </p>
-              </div>
+              <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
+                <div className="min-w-0 space-y-8">
+                  <div className="max-w-2xl min-w-0">
+                    <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">Build your own set</p>
+                    <h2 className="whitespace-normal break-words font-serif text-3xl leading-tight md:text-5xl">Build a set yourself.</h2>
+                    <p className="mt-5 max-w-xl text-lg leading-8 text-[#665950]">
+                      Start with 3 jars for €29. Every extra 50ml pot adds €5.
+                    </p>
+                  </div>
 
-              <div className="mt-10 grid min-w-0 gap-8 lg:grid-cols-[340px_minmax(0,1fr)] lg:items-start">
-                <aside className="order-3 min-w-0 rounded-[2rem] border border-[#E3D1B8] bg-[#FAFAF8]/78 p-6 custom-box-shadow lg:order-1 lg:sticky lg:top-8">
-                  <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#B88746]">Custom set</p>
-                  <h3 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">€{currentPrice}</h3>
-                  <p className="mt-4 leading-7 text-[#665950]">
-                    Base Set: 3 jars for €29. Extra jars: €5 each. Remove any jar to update the price.
-                  </p>
-                  <button
-                    type="button"
-                    disabled={!canSubmit}
-                    onClick={handleCustomSubmit}
-                    className={`mt-7 inline-flex w-full items-center justify-center gap-3 rounded-2xl px-5 py-4 text-center font-bold leading-snug transition ${
-                      canSubmit
-                        ? "bg-[#D96C4A] text-[#FFF8EB] shadow-[0_18px_48px_rgba(217,108,74,.23)] hover:bg-[#C85E3F]"
-                        : "cursor-not-allowed bg-[#E3D1B8] text-[#8B786A]"
-                    }`}
-                  >
-                    <span className="min-w-0 whitespace-normal break-words">
-                      {canSubmit ? `Add Custom Set to Waitlist (€${currentPrice})` : `Add ${missingCount} more to complete Base Set`}
-                    </span>
-                    {canSubmit && <IconArrow className="h-5 w-5 shrink-0" />}
-                  </button>
-                  <AnimatePresence>
-                    {message && (
-                      <motion.p
-                        key={message}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        className="mt-4 min-h-6 text-sm font-semibold text-[#667760]"
-                      >
-                        {message}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </aside>
+                  <aside className="min-w-0 rounded-[2rem] border border-[#E3D1B8] bg-[#FAFAF8]/78 p-5 custom-box-shadow md:p-6">
+                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#B88746]">Custom set</p>
+                    <h3 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">€{currentPrice}</h3>
+                    <p className="mt-4 leading-7 text-[#665950]">
+                      Base Set: 3 jars for €29. Extra jars: €5 each. Remove any jar to update the price.
+                    </p>
+                    <button
+                      type="button"
+                      disabled={!canSubmit}
+                      onClick={handleCustomSubmit}
+                      className={`mt-7 inline-flex w-full items-center justify-center gap-3 rounded-2xl px-5 py-4 text-center font-bold leading-snug transition ${
+                        canSubmit
+                          ? "bg-[#D96C4A] text-[#FFF8EB] shadow-[0_18px_48px_rgba(217,108,74,.23)] hover:bg-[#C85E3F]"
+                          : "cursor-not-allowed bg-[#E3D1B8] text-[#8B786A]"
+                      }`}
+                    >
+                      <span className="min-w-0 whitespace-normal break-words">
+                        {canSubmit ? `Add Custom Set to Waitlist (€${currentPrice})` : `Add ${missingCount} more to complete Base Set`}
+                      </span>
+                      {canSubmit && <IconArrow className="h-5 w-5 shrink-0" />}
+                    </button>
+                    <AnimatePresence>
+                      {message && (
+                        <motion.p
+                          key={message}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          className="mt-4 min-h-6 text-sm font-semibold text-[#667760]"
+                        >
+                          {message}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </aside>
+                </div>
 
-                <div className="order-1 min-w-0 space-y-8 lg:order-2">
+                <div className="min-w-0 space-y-8">
                   <div className="min-w-0 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/76 p-4 custom-box-shadow md:p-5">
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-4">
                       <span className="text-sm font-bold uppercase tracking-[0.22em] text-[#8A9A86]">Palette</span>
@@ -744,7 +765,7 @@
                         {boxContents.length} selected
                       </span>
                     </div>
-                    <div className="mt-5 flex max-w-full gap-3 overflow-x-auto pb-2">
+                    <div className="mt-5 flex max-w-full touch-pan-x gap-3 overflow-x-auto overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch]">
                       {glazeOptions.map((glaze) => (
                         <motion.button
                           key={glaze.id}
@@ -788,7 +809,7 @@
                         </span>
                       </div>
 
-                      <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                      <div className="grid min-w-0 gap-4 sm:grid-cols-2">
                         {Array.from({ length: slotCount }).map((_, slot) => {
                           const jar = boxContents[slot];
                           const isExtra = slot >= 3;
@@ -877,7 +898,7 @@
         }
 
         return (
-          <main className="min-h-screen bg-[#FDFBF7] text-[#2D2825]">
+          <main className="min-h-screen overflow-x-hidden bg-[#FDFBF7] text-[#2D2825]">
             <section className="relative isolate min-h-screen overflow-hidden bg-[#FDFBF7] px-5 py-8 text-[#2D2825] md:px-8 md:py-10">
               <HeroSlideshow />
               <nav className="relative z-10 mx-auto flex max-w-6xl items-center justify-between">
@@ -909,7 +930,7 @@
                   </div>
                   <div className="mt-8 flex w-full max-w-[260px]">
                     <a
-                      href="#how-it-works"
+                      href="#swipe-deck"
                       className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
                     >
                       See how it works <IconArrow className="h-5 w-5" />
