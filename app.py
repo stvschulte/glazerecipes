@@ -16,10 +16,52 @@ st.set_page_config(
 # Hide the Streamlit header/footer
 hide_streamlit_style = """
     <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    .stAppViewContainer {padding: 0;}
-    .stApp {background-color: #11100f;}
+    html,
+    body,
+    .stApp,
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMain"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FDFBF7 !important;
+        overflow-x: hidden !important;
+    }
+
+    #MainMenu,
+    header,
+    footer,
+    [data-testid="stHeader"],
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+        height: 0 !important;
+        visibility: hidden !important;
+    }
+
+    .block-container,
+    [data-testid="stMainBlockContainer"] {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .element-container,
+    [data-testid="stElementContainer"],
+    [data-testid="stIFrame"] {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    iframe {
+        display: block !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        border: 0 !important;
+    }
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -27,6 +69,46 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # Read and render the HTML file
 with open(BASE_DIR / "index.html", "r", encoding="utf-8") as f:
     html_content = f.read()
+
+# Streamlit renders this file inside a tall iframe. Without this override,
+# CSS viewport units use the iframe height and make the hero image look huge.
+streamlit_iframe_fixes = """
+<style>
+  html,
+  body,
+  #root {
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    background: #FDFBF7;
+  }
+
+  #root > main {
+    min-height: auto !important;
+  }
+
+  #root > main > section:first-child {
+    min-height: 760px !important;
+    height: 760px !important;
+  }
+
+  #root > main > section:first-child > div.relative.z-10.mx-auto.flex {
+    min-height: 668px !important;
+  }
+
+  @media (max-width: 640px) {
+    #root > main > section:first-child {
+      min-height: 720px !important;
+      height: 720px !important;
+    }
+
+    #root > main > section:first-child > div.relative.z-10.mx-auto.flex {
+      min-height: 628px !important;
+    }
+  }
+</style>
+"""
+html_content = html_content.replace("</head>", f"{streamlit_iframe_fixes}</head>")
 
 # Convert local images to Base64 on the fly so they load in Streamlit Cloud
 def get_image_as_base64(path, mime_type):
