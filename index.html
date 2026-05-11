@@ -236,7 +236,7 @@
         );
       }
 
-      function RecipeCard({ recipe, index, active, onSwipe, onOpen }) {
+      function RecipeCard({ recipe, index, active, onSwipe }) {
         const x = useMotionValue(0);
         const rotate = useTransform(x, [-240, 240], [-11, 11]);
         const opacity = useTransform(x, [-260, -120, 0, 120, 260], [0.88, 0.96, 1, 0.96, 0.88]);
@@ -263,11 +263,12 @@
             drag={active ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.82}
-            onTap={() => active && onOpen(recipe)}
-            onClick={() => active && onOpen(recipe)}
             onDragEnd={(_, info) => {
-              if (info.offset.x > 120 || info.velocity.x > 720) onSwipe("right");
-              if (info.offset.x < -120 || info.velocity.x < -720) onSwipe("left");
+              if (info.offset.x > 120 || info.velocity.x > 720) {
+                onSwipe("right");
+              } else if (info.offset.x < -120 || info.velocity.x < -720) {
+                onSwipe("left");
+              }
             }}
             initial={{ scale: 0.96, y: 24, opacity: 0 }}
             animate={{ scale: active ? 1 : 1 - index * 0.045, y: index * 15, opacity: 1 }}
@@ -306,7 +307,7 @@
 
                 <div className="absolute inset-x-0 bottom-0 p-6 pt-28">
                   <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-[#F0D3BE]">
-                    Tap for recipe
+                    Swipe right for recipe
                   </p>
                   <h3 className="font-serif text-4xl leading-none text-[#FFF8EB]">{recipe.look}</h3>
                   <p className="mt-3 max-w-sm text-sm leading-6 text-[#F8EAD6] opacity-90">{recipe.mood}</p>
@@ -435,6 +436,7 @@
 
           if (direction === "right") {
             setSaved((items) => (items.includes(topCard.look) ? items : [...items, topCard.look]));
+            setExpanded(topCard);
             showToast("Recipe added to your set!");
           }
 
@@ -459,7 +461,7 @@
                   Let the fired glaze do the choosing for you.
                 </h2>
                 <p className="mt-6 max-w-xl text-lg leading-8 text-[#665950]">
-                  Swipe right to save a recipe, left for the next idea. Tap a card to open the full profile with the three pots, layering order, and firing notes.
+                  Swipe right to save a combination and open its recipe profile. Swipe left to reject it and move to the next idea.
                 </p>
                 <div className="mt-8 rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/74 p-5 text-sm leading-6 text-[#6E584B] warm-shadow">
                   <strong className="block text-[#2D2825]">Simple by design:</strong>
@@ -482,7 +484,6 @@
                         index={index}
                         active={index === 0}
                         onSwipe={swipe}
-                        onOpen={setExpanded}
                       />
                     ))}
                   </AnimatePresence>
