@@ -7,16 +7,16 @@
       name="description"
       content="GlazeRecipes helps potters build compact €29 glaze recipe sets with 50ml studio-ready pots."
     />
-    <title>GlazeRecipes | Studio Recipe Deck</title>
+    <title>GlazeRecipes | Sunlit Recipe Deck</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap"
       rel="stylesheet"
     />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231C1E1F'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23B34700'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E9DDC5'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23FDFBF7'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23D96C4A'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23F4E9D8'/%3E%3C/svg%3E"
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -24,17 +24,18 @@
         theme: {
           extend: {
             colors: {
-              studio: "#1C1E1F",
-              charcoal: "#2A2F33",
-              terracotta: "#B34700",
-              bone: "#E9DDC5",
-              sage: "#98A38F",
-              ash: "#B7AEA0",
+              linen: "#FDFBF7",
+              paper: "#FAFAF8",
+              canvas: "#F4E9D8",
+              espresso: "#2D2825",
+              clay: "#D96C4A",
+              sage: "#8A9A86",
+              ochre: "#B88746",
+              umber: "#7A5742",
             },
             fontFamily: {
-              serif: ["Playfair Display", "Georgia", "serif"],
+              serif: ["Newsreader", "Georgia", "serif"],
               sans: ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
-              notes: ["Caveat", "cursive"],
             },
           },
         },
@@ -52,87 +53,68 @@
       body {
         margin: 0;
         overflow-x: hidden;
-        background: #1c1e1f;
-        color: #e9ddc5;
+        background: #fdfbf7;
+        color: #2d2825;
         font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
       }
 
-      .noise::before {
+      .paper-grain::before {
         position: fixed;
         inset: 0;
         z-index: 80;
         pointer-events: none;
         content: "";
-        opacity: 0.18;
-        mix-blend-mode: soft-light;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-        background-size: 180px 180px;
+        opacity: 0.075;
+        mix-blend-mode: multiply;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+        background-size: 210px 210px;
       }
 
-      .studio-bg {
+      .sunlit-bg {
         background:
-          radial-gradient(circle at 18% 16%, rgba(179, 71, 0, 0.2), transparent 29%),
-          radial-gradient(circle at 78% 22%, rgba(213, 159, 91, 0.11), transparent 25%),
-          radial-gradient(circle at 52% 92%, rgba(96, 88, 71, 0.28), transparent 34%),
-          linear-gradient(115deg, rgba(18, 19, 19, 0.96), rgba(35, 39, 40, 0.9)),
-          #1c1e1f;
+          radial-gradient(circle at 14% 8%, rgba(217, 108, 74, 0.13), transparent 26%),
+          radial-gradient(circle at 86% 16%, rgba(184, 135, 70, 0.14), transparent 30%),
+          radial-gradient(circle at 58% 90%, rgba(138, 154, 134, 0.13), transparent 34%),
+          linear-gradient(180deg, #fdfbf7 0%, #faf7ef 46%, #f6ecdc 100%);
       }
 
-      .workbench {
+      .paper-panel {
         background:
-          linear-gradient(90deg, rgba(18, 19, 19, 0.94), rgba(18, 19, 19, 0.7) 46%, rgba(18, 19, 19, 0.26)),
-          radial-gradient(circle at 72% 38%, rgba(179, 71, 0, 0.16), transparent 30%),
-          url("assets/jars.jpg");
-        background-size: cover;
-        background-position: center;
+          linear-gradient(135deg, rgba(253, 251, 247, 0.94), rgba(244, 233, 216, 0.78)),
+          radial-gradient(circle at 24% 14%, rgba(255, 255, 255, 0.42), transparent 28%);
       }
 
-      .slate-table {
-        background:
-          radial-gradient(circle at 72% 8%, rgba(179, 71, 0, 0.18), transparent 28%),
-          linear-gradient(rgba(233, 221, 197, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(233, 221, 197, 0.03) 1px, transparent 1px),
-          #202426;
-        background-size: auto, 42px 42px, 42px 42px, auto;
-      }
-
-      .clay-panel {
-        background:
-          linear-gradient(120deg, rgba(21, 22, 22, 0.9), rgba(36, 33, 28, 0.82)),
-          url("assets/clay.jpg");
-        background-size: cover;
-        background-position: center;
-      }
-
-      .soft-shadow {
+      .warm-shadow {
         box-shadow:
-          0 28px 80px rgba(0, 0, 0, 0.38),
-          0 2px 0 rgba(233, 221, 197, 0.04) inset;
+          0 26px 80px rgba(116, 77, 48, 0.16),
+          0 8px 24px rgba(116, 77, 48, 0.08),
+          inset 0 1px 0 rgba(255, 252, 245, 0.9);
       }
 
       .card-shadow {
         box-shadow:
-          0 34px 90px rgba(0, 0, 0, 0.42),
-          0 0 0 1px rgba(233, 221, 197, 0.08),
-          inset 0 1px 0 rgba(233, 221, 197, 0.08);
+          0 30px 86px rgba(96, 63, 41, 0.22),
+          0 10px 26px rgba(96, 63, 41, 0.12),
+          0 0 0 1px rgba(126, 91, 67, 0.12);
       }
 
-      .handwritten-line {
-        background-image: linear-gradient(rgba(233, 221, 197, 0.12) 1px, transparent 1px);
-        background-size: 100% 34px;
-      }
-
-      .image-vignette::after {
+      .photo-vignette::after {
         position: absolute;
         inset: 0;
         content: "";
         background:
-          radial-gradient(circle at 48% 22%, transparent 24%, rgba(12, 13, 13, 0.42) 72%),
-          linear-gradient(0deg, rgba(12, 13, 13, 0.84), transparent 42%);
+          linear-gradient(0deg, rgba(45, 40, 37, 0.78), transparent 48%),
+          radial-gradient(circle at 50% 22%, transparent 28%, rgba(45, 40, 37, 0.22) 88%);
+      }
+
+      .soft-input {
+        box-shadow:
+          inset 0 1px 0 rgba(255, 252, 245, 0.9),
+          0 14px 30px rgba(116, 77, 48, 0.08);
       }
     </style>
   </head>
-  <body class="noise">
+  <body class="paper-grain">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -147,63 +129,60 @@
       const recipes = [
         {
           id: "midnight-ocean",
-          look: "The Midnight Ocean Bowl",
+          look: "Midnight Ocean",
           title: "The Midnight Ocean Bowl",
           image: "assets/midnight-ocean.png",
-          mood: "Deep blue melt, iron-dark edges, and a quiet blush inside the lip.",
+          mood: "Deep blue melt, iron-dark edges, and a soft blush inside the lip.",
           clay: "Speckled stoneware, medium fire",
           palette: [
             { name: "Deep Teal", color: "#154E58", role: "Base" },
-            { name: "Stormy Grey", color: "#65727A", role: "Rim" },
-            { name: "Cream", color: "#D9CCB2", role: "Accent" },
+            { name: "Stormy Grey", color: "#65727A", role: "Top" },
+            { name: "Warm Cream", color: "#D9CCB2", role: "Accent" },
           ],
           layers: [
-            ["Base", "2 solid coats of Deep Teal. Let dry completely."],
-            ["Layer 2", "1 coat of Stormy Grey painted only on the top rim."],
-            ["Accent", "A light splash of Cream inside."],
+            ["Base", "2 coats Deep Teal over the full piece. Let dry completely."],
+            ["Top", "1 coat Stormy Grey around the rim and upper third."],
+            ["Accent", "A light splash of Warm Cream inside the bowl."],
             ["Firing", "Cone 6, hold for 15 mins."],
           ],
-          note: "Best when the rim is thick enough to catch a slow blue run.",
         },
         {
           id: "forest-lichen",
-          look: "Rustic Forest",
+          look: "Forest Lichen",
           title: "The Forest Lichen Tumbler",
           image: "assets/forest-ash.png",
           mood: "Mossy olive breaks into blue rivulets over a smoky clay body.",
           clay: "Recycled studio clay, cone 6",
           palette: [
-            { name: "Stormy Night", color: "#4B5B68", role: "Dip" },
+            { name: "Stormy Night", color: "#4B5B68", role: "Base" },
             { name: "Deep Olive", color: "#8D8E45", role: "Body" },
-            { name: "Honey Flux", color: "#E5D8AA", role: "Flow" },
+            { name: "Honey Flux", color: "#E5D8AA", role: "Rim" },
           ],
           layers: [
-            ["Base", "Quick dunk in Stormy Night. Keep it thin."],
-            ["Layer 2", "2 brushed coats of Deep Olive over the top two thirds."],
-            ["Accent", "Brush Honey Flux around the lip and high points."],
-            ["Firing", "Cone 6, natural cool. No long hold."],
+            ["Base", "1 thin dip of Stormy Night across the whole form."],
+            ["Body", "2 coats Deep Olive over the top two thirds."],
+            ["Rim", "Brush Honey Flux around the lip and high points."],
+            ["Firing", "Cone 6, natural cool."],
           ],
-          note: "Leave a few clay windows open. The contrast is the whole recipe.",
         },
         {
           id: "honey-iron",
-          look: "Desert Sand",
+          look: "Honey Iron",
           title: "The Honey Iron Cup",
           image: "assets/honey-iron.png",
           mood: "Bone glaze, honey crystals, and warm iron pooling around the lip.",
           clay: "White mid-fire clay, carved lower band",
           palette: [
             { name: "Raw Sienna", color: "#7A4B2F", role: "Lower" },
-            { name: "Micro Pearl", color: "#E7DDC2", role: "Upper" },
+            { name: "Oatmeal", color: "#E7DDC2", role: "Upper" },
             { name: "Ancient Jasper", color: "#8C4B2E", role: "Rim" },
           ],
           layers: [
-            ["Base", "3 coats of Raw Sienna on the lower half. Sgraffito while damp."],
-            ["Layer 2", "3 thick coats of Micro Pearl on the upper half."],
-            ["Accent", "1 careful rim coat of Ancient Jasper, interior only."],
+            ["Lower", "2 coats Raw Sienna on the lower half."],
+            ["Upper", "3 generous coats Oatmeal on the upper half."],
+            ["Rim", "1 careful coat Ancient Jasper on the rim and interior."],
             ["Firing", "Cone 6, hold for 15 mins."],
           ],
-          note: "Keep the pearl glaze thick. Thin coats lose the snowy bloom.",
         },
       ];
 
@@ -233,24 +212,25 @@
         );
       }
 
-      function IconFlame(props) {
+      function IconSpark(props) {
         return (
-          <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-            <path d="M13.7 2.6c.4 2.7-.8 4.3-2.2 5.7-1.5 1.6-3.2 3.2-2.3 6 .6-.9 1.3-1.6 2.2-2.3 3.4-2.5 2.8-6.1 2.3-9.4ZM6.2 12.2C3.7 15.4 5.5 22 12 22c5.3 0 8-3.1 8-7.2 0-3.7-2.1-6.6-5-8.9.3 2.8-.3 5.5-3 7.6-1.2 1-2.1 2-2.2 3.8-1.8-.8-3-2.6-3.6-5.1Z" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
+            <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" />
+            <path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z" />
           </svg>
         );
       }
 
       function PotTag({ pot }) {
         return (
-          <div className="flex items-center gap-3 rounded-2xl border border-[#E9DDC5]/12 bg-[#2A2F33]/55 p-3">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#E5D6BE] bg-[#FDFBF7]/76 p-3">
             <span
-              className="h-11 w-11 rounded-full border border-[#E9DDC5]/18 shadow-[inset_0_8px_14px_rgba(255,255,255,.13),inset_0_-8px_16px_rgba(0,0,0,.28)]"
+              className="h-11 w-11 rounded-full border border-[#A77B5D]/20 shadow-[inset_0_8px_14px_rgba(255,252,245,.5),inset_0_-8px_16px_rgba(70,45,30,.18)]"
               style={{ background: pot.color }}
             />
             <span>
-              <span className="block text-xs uppercase tracking-[0.18em] text-[#98A38F]">{pot.role}</span>
-              <strong className="block text-sm text-[#E9DDC5]">{pot.name}</strong>
+              <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#8A9A86]">{pot.role}</span>
+              <strong className="block text-sm text-[#2D2825]">{pot.name}</strong>
             </span>
           </div>
         );
@@ -258,23 +238,23 @@
 
       function RecipeCard({ recipe, index, active, onSwipe, onOpen }) {
         const x = useMotionValue(0);
-        const rotate = useTransform(x, [-240, 240], [-12, 12]);
-        const opacity = useTransform(x, [-260, -120, 0, 120, 260], [0.86, 0.96, 1, 0.96, 0.86]);
-        const yesOpacity = useTransform(x, [30, 150], [0, 1]);
-        const noOpacity = useTransform(x, [-150, -30], [1, 0]);
+        const rotate = useTransform(x, [-240, 240], [-11, 11]);
+        const opacity = useTransform(x, [-260, -120, 0, 120, 260], [0.88, 0.96, 1, 0.96, 0.88]);
+        const yesOpacity = useTransform(x, [34, 150], [0, 1]);
+        const noOpacity = useTransform(x, [-150, -34], [1, 0]);
         const tint = useTransform(
           x,
           [-220, 0, 220],
-          ["rgba(99,33,24,.44)", "rgba(0,0,0,0)", "rgba(59,84,60,.4)"]
+          ["rgba(201,82,66,.34)", "rgba(0,0,0,0)", "rgba(138,154,134,.32)"]
         );
 
         return (
           <motion.article
             layoutId={`recipe-card-${recipe.id}`}
-            className="absolute inset-0 cursor-grab overflow-hidden rounded-[1.75rem] border border-[#E9DDC5]/14 bg-[#171A1A] card-shadow active:cursor-grabbing"
+            className="absolute inset-0 cursor-grab overflow-hidden rounded-[1.5rem] border border-[#E3D1B8] bg-[#F4E9D8] card-shadow active:cursor-grabbing"
             style={{
               x,
-              rotate: active ? rotate : index % 2 ? -2.2 : 2.2,
+              rotate: active ? rotate : index % 2 ? -1.8 : 1.8,
               opacity,
               zIndex: 20 - index,
               scale: active ? 1 : 1 - index * 0.045,
@@ -299,7 +279,7 @@
             }}
             transition={{ type: "spring", stiffness: 245, damping: 28 }}
           >
-            <div className="image-vignette absolute inset-0">
+            <div className="photo-vignette absolute inset-0">
               <motion.img
                 layoutId={`recipe-image-${recipe.id}`}
                 src={recipe.image}
@@ -312,29 +292,29 @@
               <>
                 <motion.div className="absolute inset-0" style={{ backgroundColor: tint }} />
                 <motion.div
-                  className="absolute left-5 top-5 rounded-full border border-[#DFA08F]/40 bg-[#4A211B]/68 px-5 py-2 text-sm font-bold uppercase tracking-[0.22em] text-[#F0C4B7]"
+                  className="absolute left-5 top-5 rounded-full border border-[#D96C4A]/28 bg-[#FDFBF7]/86 px-5 py-2 text-sm font-bold uppercase tracking-[0.22em] text-[#A94B35] backdrop-blur"
                   style={{ opacity: noOpacity }}
                 >
                   Skip
                 </motion.div>
                 <motion.div
-                  className="absolute right-5 top-5 rounded-full border border-[#B5C2A4]/42 bg-[#243A2A]/70 px-5 py-2 text-sm font-bold uppercase tracking-[0.22em] text-[#D8E2C8]"
+                  className="absolute right-5 top-5 rounded-full border border-[#8A9A86]/32 bg-[#FDFBF7]/86 px-5 py-2 text-sm font-bold uppercase tracking-[0.22em] text-[#667760] backdrop-blur"
                   style={{ opacity: yesOpacity }}
                 >
-                  Love
+                  Save
                 </motion.div>
 
                 <div className="absolute inset-x-0 bottom-0 p-6 pt-28">
-                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-[#D79B62]">
-                    Tap for recipe profile
+                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-[#F0D3BE]">
+                    Tap for recipe
                   </p>
-                  <h3 className="font-serif text-4xl leading-none text-[#F0E7D2]">{recipe.look}</h3>
-                  <p className="mt-3 max-w-sm text-sm leading-6 text-[#D2C7B5]/82">{recipe.mood}</p>
+                  <h3 className="font-serif text-4xl leading-none text-[#FFF8EB]">{recipe.look}</h3>
+                  <p className="mt-3 max-w-sm text-sm leading-6 text-[#F8EAD6] opacity-90">{recipe.mood}</p>
                   <div className="mt-5 grid gap-2 sm:grid-cols-3">
                     {recipe.palette.map((pot) => (
-                      <div key={pot.name} className="rounded-xl border border-[#E9DDC5]/12 bg-[#101211]/52 px-3 py-2 backdrop-blur">
+                      <div key={pot.name} className="rounded-xl border border-[#FDFBF7]/24 bg-[#2D2825]/38 px-3 py-2 backdrop-blur">
                         <span className="mb-1 block h-3 rounded-full" style={{ background: pot.color }} />
-                        <span className="text-xs text-[#E9DDC5]/84">{pot.name}</span>
+                        <span className="text-xs text-[#FFF8EB]">{pot.name}</span>
                       </div>
                     ))}
                   </div>
@@ -356,7 +336,7 @@
 
         return (
           <motion.div
-            className="fixed inset-0 z-[70] overflow-y-auto bg-[#0F1111]/86 px-4 py-5 backdrop-blur-md md:px-8 md:py-10"
+            className="fixed inset-0 z-[70] overflow-y-auto bg-[#2D2825]/18 px-4 py-5 backdrop-blur-xl md:px-8 md:py-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -364,7 +344,7 @@
             <button
               type="button"
               onClick={onClose}
-              className="fixed right-5 top-5 z-[80] grid h-12 w-12 place-items-center rounded-full border border-[#E9DDC5]/16 bg-[#1C1E1F]/86 text-[#E9DDC5] shadow-[0_20px_60px_rgba(0,0,0,.45)]"
+              className="fixed right-5 top-5 z-[80] grid h-12 w-12 place-items-center rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/92 text-[#2D2825] shadow-[0_18px_50px_rgba(96,63,41,.18)]"
               aria-label="Close recipe profile"
             >
               <IconX className="h-6 w-6" />
@@ -372,62 +352,58 @@
 
             <motion.article
               layoutId={`recipe-card-${recipe.id}`}
-              className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[#E9DDC5]/14 bg-[#1A1C1C] soft-shadow"
+              className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[#E3D1B8] bg-[#FDFBF7] warm-shadow"
             >
-              <div className="grid lg:grid-cols-[1.05fr_.95fr]">
-                <div className="relative min-h-[360px] lg:min-h-[760px]">
+              <div className="grid lg:grid-cols-[1.04fr_.96fr]">
+                <div className="relative min-h-[380px] bg-[#EDE1CF] lg:min-h-[760px]">
                   <motion.img
                     layoutId={`recipe-image-${recipe.id}`}
                     src={recipe.image}
                     alt={recipe.title}
                     className="absolute inset-0 h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(18,19,19,.78),transparent_45%),radial-gradient(circle_at_45%_22%,transparent_20%,rgba(18,19,19,.44)_78%)]" />
+                  <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(45,40,37,.72),transparent_50%)]" />
                   <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
-                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#D79B62]">Expanded Recipe Profile</p>
-                    <h2 className="mt-3 max-w-xl font-serif text-5xl leading-[.96] text-[#F0E7D2] md:text-7xl">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#F5D8C7]">Recipe Profile</p>
+                    <h2 className="mt-3 max-w-xl font-serif text-5xl leading-[.96] text-[#FFF8EB] md:text-7xl">
                       {recipe.title}
                     </h2>
-                    <p className="mt-5 max-w-lg text-lg leading-8 text-[#D6CBB9]/82">{recipe.mood}</p>
+                    <p className="mt-5 max-w-lg text-lg leading-8 text-[#F8EAD6] opacity-90">{recipe.mood}</p>
                   </div>
                 </div>
 
-                <div className="slate-table p-6 md:p-8 lg:p-10">
-                  <div className="rounded-[1.5rem] border border-[#E9DDC5]/12 bg-[#111313]/58 p-5">
-                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#98A38F]">The 3 glaze pots</p>
+                <div className="paper-panel p-6 md:p-8 lg:p-10">
+                  <div className="rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/72 p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#8A9A86]">The 3 required 50ml pots</p>
                     <div className="mt-4 grid gap-3">
                       {recipe.palette.map((pot) => (
                         <PotTag key={pot.name} pot={pot} />
                       ))}
                     </div>
-                    <div className="mt-5 rounded-2xl border border-[#B34700]/25 bg-[#B34700]/10 p-4 text-sm leading-6 text-[#D8CCB8]">
-                      <strong className="text-[#F0E7D2]">€29 Base Set:</strong> 3 colors, 50ml each. Extra pots are €5.
+                    <div className="mt-5 rounded-2xl border border-[#D96C4A]/22 bg-[#D96C4A]/10 p-4 text-sm leading-6 text-[#6E584B]">
+                      <strong className="text-[#2D2825]">€29 Base Set:</strong> pick 3 colors, 50ml each.
                     </div>
                   </div>
 
-                  <section className="mt-6 rounded-[1.5rem] border border-[#E9DDC5]/12 bg-[#211F1A]/66 p-5">
-                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#98A38F]">The Secret Recipe</p>
-                    <p className="mt-1 font-notes text-3xl font-bold text-[#D79B62]">Layering Notes</p>
-                    <p className="mt-1 text-sm text-[#AFA797]">Clay body: {recipe.clay}</p>
-                    <div className="handwritten-line mt-5 space-y-4">
+                  <section className="mt-6 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FDFBF7]/78 p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#8A9A86]">Layering Recipe</p>
+                    <p className="mt-2 text-sm text-[#7A5742]">Clay body: {recipe.clay}</p>
+                    <div className="mt-5 space-y-4">
                       {recipe.layers.map(([label, copy]) => (
-                        <div key={label} className="grid grid-cols-[86px_1fr] gap-4 border-b border-[#E9DDC5]/10 pb-4 last:border-b-0">
-                          <span className="font-notes text-2xl text-[#D79B62]">{label}</span>
-                          <p className="font-notes text-2xl leading-8 text-[#EFE3CA]">{copy}</p>
+                        <div key={label} className="grid grid-cols-[72px_1fr] gap-4 border-b border-[#E5D6BE] pb-4 last:border-b-0">
+                          <span className="font-serif text-xl font-semibold text-[#D96C4A]">{label}</span>
+                          <p className="text-base leading-7 text-[#4C4038]">{copy}</p>
                         </div>
                       ))}
-                    </div>
-                    <div className="mt-5 rounded-2xl border border-[#E9DDC5]/10 bg-[#151615]/60 p-4">
-                      <p className="font-notes text-2xl leading-7 text-[#D6CBB9]">{recipe.note}</p>
                     </div>
                   </section>
 
                   <button
                     type="button"
                     onClick={() => onAdd(recipe)}
-                    className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#B34700] px-6 py-5 font-bold text-[#FFF3DE] shadow-[0_22px_60px_rgba(107,43,0,.34)] transition hover:-translate-y-0.5 hover:bg-[#C4550B]"
+                    className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-5 font-bold text-[#FFF8EB] shadow-[0_20px_50px_rgba(217,108,74,.28)] transition hover:-translate-y-0.5 hover:bg-[#C85E3F]"
                   >
-                    Add this €29 Set to Cart/Waitlist
+                    Add this €29 Set to Waitlist
                     <IconArrow className="h-5 w-5" />
                   </button>
                 </div>
@@ -441,58 +417,57 @@
         const [cards, setCards] = useState(recipes);
         const [expanded, setExpanded] = useState(null);
         const [toast, setToast] = useState("");
-        const [loved, setLoved] = useState([]);
+        const [saved, setSaved] = useState([]);
         const topCard = cards[0];
 
         function showToast(message) {
           setToast(message);
           window.clearTimeout(showToast.timer);
-          showToast.timer = window.setTimeout(() => setToast(""), 2400);
+          showToast.timer = window.setTimeout(() => setToast(""), 2300);
         }
 
         function swipe(direction) {
           if (!topCard) {
             setCards(recipes);
-            showToast("Deck refreshed. Pick another recipe look.");
+            showToast("Fresh ideas on the bench.");
             return;
           }
 
           if (direction === "right") {
-            setLoved((items) => [...items, topCard.look]);
-            showToast("Added 3 colors to your €29 Base Set!");
-          } else {
-            showToast("Skipped. Next recipe ready.");
+            setSaved((items) => (items.includes(topCard.look) ? items : [...items, topCard.look]));
+            showToast("Recipe added to your set!");
           }
 
           setCards((items) => items.slice(1));
         }
 
         function addRecipe(recipe) {
-          setLoved((items) => (items.includes(recipe.look) ? items : [...items, recipe.look]));
+          setSaved((items) => (items.includes(recipe.look) ? items : [...items, recipe.look]));
           setExpanded(null);
-          showToast("Added 3 colors to your €29 Base Set!");
+          showToast("Recipe added to your set!");
         }
 
         return (
-          <section id="swipe-deck" className="slate-table relative overflow-hidden px-5 py-24 text-[#E9DDC5] md:px-8">
+          <section id="swipe-deck" className="relative overflow-hidden bg-[#FAFAF8] px-5 py-24 text-[#2D2825] md:px-8">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(217,108,74,.09),transparent_28%),radial-gradient(circle_at_82%_70%,rgba(138,154,134,.13),transparent_32%)]" />
             <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[.88fr_1.12fr]">
               <div>
-                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#D79B62]">
+                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">
                   Recipe Swipe Deck
                 </p>
-                <h2 className="font-serif text-5xl leading-[.98] text-[#F0E7D2] md:text-6xl">
-                  Swipe through real glaze profiles from the studio bench.
+                <h2 className="font-serif text-5xl leading-[.98] text-[#2D2825] md:text-6xl">
+                  Let the fired glaze do the choosing for you.
                 </h2>
-                <p className="mt-6 max-w-xl text-lg leading-8 text-[#C9BEAA]/78">
-                  Swipe right to save a look. Tap the card to open its full recipe profile, including the three pots, layering order, and firing notes.
+                <p className="mt-6 max-w-xl text-lg leading-8 text-[#665950]">
+                  Swipe right to save a recipe, left for the next idea. Tap a card to open the full profile with the three pots, layering order, and firing notes.
                 </p>
-                <div className="mt-8 rounded-2xl border border-[#E9DDC5]/14 bg-[#101211]/46 p-5 text-sm leading-6 text-[#C9BEAA]/78 backdrop-blur">
-                  <strong className="block text-[#F0E7D2]">Pricing stays simple:</strong>
-                  €29 Base Set includes 3 colors, 50ml each. Add extra pots for €5 per color.
+                <div className="mt-8 rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/74 p-5 text-sm leading-6 text-[#6E584B] warm-shadow">
+                  <strong className="block text-[#2D2825]">Simple by design:</strong>
+                  A €29 Base Set includes 3 colors, 50ml each. Buy what you brush. Stop letting €20 jars dry out on your shelf.
                 </div>
-                {loved.length > 0 && (
-                  <p className="mt-4 max-w-xl text-sm leading-6 text-[#AEB7A2]">
-                    Saved to your waitlist set: <span className="text-[#D79B62]">{loved.join(", ")}</span>
+                {saved.length > 0 && (
+                  <p className="mt-4 max-w-xl text-sm leading-6 text-[#667760]">
+                    Saved recipes: <span className="font-semibold text-[#B85F42]">{saved.join(", ")}</span>
                   </p>
                 )}
               </div>
@@ -513,14 +488,14 @@
                   </AnimatePresence>
 
                   {!cards.length && (
-                    <div className="absolute inset-0 grid place-items-center rounded-[1.75rem] border border-[#E9DDC5]/14 bg-[#171A1A] p-8 text-center card-shadow">
+                    <div className="absolute inset-0 grid place-items-center rounded-[1.5rem] border border-[#E3D1B8] bg-[#FDFBF7] p-8 text-center card-shadow">
                       <div>
-                        <h3 className="font-serif text-4xl text-[#F0E7D2]">All recipes reviewed.</h3>
-                        <p className="mt-3 text-[#C9BEAA]/72">Refresh the bench stack or jump to the waitlist.</p>
+                        <h3 className="font-serif text-4xl text-[#2D2825]">All recipes reviewed.</h3>
+                        <p className="mt-3 text-[#665950]">Refresh the stack or jump to the waitlist.</p>
                         <button
                           type="button"
                           onClick={() => setCards(recipes)}
-                          className="mt-7 rounded-2xl bg-[#B34700] px-6 py-3 font-semibold text-[#FFF3DE] shadow-[0_18px_48px_rgba(79,32,0,.38)]"
+                          className="mt-7 rounded-2xl bg-[#D96C4A] px-6 py-3 font-semibold text-[#FFF8EB] shadow-[0_18px_44px_rgba(217,108,74,.25)]"
                         >
                           Refresh deck
                         </button>
@@ -533,7 +508,7 @@
                   <button
                     type="button"
                     onClick={() => swipe("left")}
-                    className="grid h-16 w-16 place-items-center rounded-full border border-[#E9DDC5]/16 bg-[#1C1E1F]/66 text-[#D8CCB8] shadow-[0_18px_54px_rgba(0,0,0,.35)] transition hover:-translate-y-1 hover:bg-[#2B2D2C]"
+                    className="grid h-16 w-16 place-items-center rounded-full border border-[#E3D1B8] bg-[#FDFBF7] text-[#7A5742] shadow-[0_18px_50px_rgba(96,63,41,.14)] transition hover:-translate-y-1 hover:bg-[#F6ECDE]"
                     aria-label="Skip recipe"
                   >
                     <IconX className="h-7 w-7" />
@@ -541,8 +516,8 @@
                   <button
                     type="button"
                     onClick={() => swipe("right")}
-                    className="grid h-20 w-20 place-items-center rounded-full bg-[#B34700] text-[#FFF3DE] shadow-[0_22px_62px_rgba(107,43,0,.34)] transition hover:-translate-y-1 hover:bg-[#C4550B]"
-                    aria-label="Love recipe"
+                    className="grid h-20 w-20 place-items-center rounded-full bg-[#D96C4A] text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.28)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
+                    aria-label="Save recipe"
                   >
                     <IconHeart className="h-8 w-8" />
                   </button>
@@ -567,7 +542,7 @@
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 18 }}
-                  className="fixed bottom-6 left-1/2 z-[90] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-[#E9DDC5]/14 bg-[#111313]/92 px-5 py-4 text-center font-semibold text-[#F0E7D2] shadow-[0_22px_70px_rgba(0,0,0,.45)] backdrop-blur"
+                  className="fixed bottom-6 left-1/2 z-[90] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/94 px-5 py-4 text-center font-semibold text-[#2D2825] shadow-[0_22px_70px_rgba(96,63,41,.22)] backdrop-blur"
                 >
                   {toast}
                 </motion.div>
@@ -585,7 +560,7 @@
           () => [
             ["€29", "Base Set"],
             ["3", "50ml pots"],
-            ["€5", "extra pot"],
+            ["0", "wasted jars"],
           ],
           []
         );
@@ -606,64 +581,64 @@
         }
 
         return (
-          <main className="min-h-screen bg-[#1C1E1F] text-[#E9DDC5]">
-            <section className="workbench relative isolate overflow-hidden px-5 py-20 md:px-8 md:py-28">
-              <nav className="mx-auto mb-20 flex max-w-6xl items-center justify-between">
-                <a href="#" className="font-serif text-2xl font-bold tracking-tight text-[#F0E7D2]">
-                  Glaze<span className="text-[#B34700]">Recipes</span>
+          <main className="min-h-screen bg-[#FDFBF7] text-[#2D2825]">
+            <section className="sunlit-bg relative isolate overflow-hidden px-5 py-8 md:px-8 md:py-10">
+              <nav className="mx-auto flex max-w-6xl items-center justify-between">
+                <a href="#" className="font-serif text-2xl font-semibold tracking-tight text-[#2D2825]">
+                  Glaze<span className="text-[#D96C4A]">Recipes</span>
                 </a>
                 <a
                   href="#waitlist"
-                  className="hidden rounded-full border border-[#E9DDC5]/16 bg-[#1C1E1F]/54 px-5 py-2.5 text-sm font-semibold text-[#E9DDC5] backdrop-blur transition hover:bg-[#2C2D2B] sm:inline-flex"
+                  className="hidden rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-5 py-2.5 text-sm font-semibold text-[#2D2825] shadow-[0_12px_30px_rgba(96,63,41,.08)] backdrop-blur transition hover:bg-[#F7EFE3] sm:inline-flex"
                 >
                   Join waitlist
                 </a>
               </nav>
 
-              <div className="mx-auto grid max-w-6xl items-end gap-12 lg:grid-cols-[1.08fr_.92fr]">
-                <div>
-                  <p className="mb-5 inline-flex rounded-full border border-[#D79B62]/30 bg-[#4B2814]/38 px-4 py-2 text-sm font-semibold text-[#E5B177]">
-                    Moody glaze recipes for small studio runs
+              <div className="mx-auto grid min-w-0 max-w-6xl items-center gap-14 pb-20 pt-16 lg:grid-cols-[1.02fr_.98fr] lg:pb-28 lg:pt-24">
+                <div className="min-w-0">
+                  <p className="mb-6 inline-flex max-w-full rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/78 px-4 py-2 text-sm font-semibold text-[#7A5742] shadow-[0_12px_30px_rgba(96,63,41,.07)]">
+                    Custom glaze sets for small studio runs
                   </p>
-                  <h1 className="max-w-[10ch] font-serif text-[46px] leading-[.94] tracking-tight text-[#F0E7D2] sm:max-w-4xl sm:text-6xl md:text-8xl">
+                  <h1 className="max-w-[10ch] break-words font-serif text-[46px] leading-[.94] tracking-[-0.01em] text-[#2D2825] sm:max-w-4xl sm:text-6xl md:text-8xl">
                     Stop paying €80 for glazes you'll never finish.
                   </h1>
-                  <p className="mt-7 max-w-[318px] text-lg leading-8 text-[#D6CBB9]/86 sm:max-w-2xl sm:text-xl sm:leading-9">
-                    Build a €29 Base Set. Pick 3 colors, 50ml each. Buy what you brush. Stop wasting €80 on giant jars that dry out.
+                  <p className="mt-7 max-w-[335px] text-lg leading-8 text-[#665950] sm:max-w-2xl sm:text-xl sm:leading-9">
+                    Build a €29 custom Base Set with 3 colors, 50ml each. Buy what you brush. Stop letting €20 jars dry out on your shelf.
                   </p>
-                  <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                  <div className="mt-10 flex w-full max-w-[350px] flex-col gap-4 sm:max-w-none sm:flex-row">
                     <a
                       href="#swipe-deck"
-                      className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#B34700] px-7 py-4 font-bold text-[#FFF3DE] shadow-[0_22px_62px_rgba(107,43,0,.34)] transition hover:-translate-y-1 hover:bg-[#C4550B]"
+                      className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F] sm:w-auto sm:px-7"
                     >
                       Open the recipe deck <IconArrow className="h-5 w-5" />
                     </a>
                     <a
                       href="#how-it-works"
-                      className="inline-flex items-center justify-center rounded-2xl border border-[#E9DDC5]/16 bg-[#1C1E1F]/54 px-7 py-4 font-bold text-[#E9DDC5] backdrop-blur transition hover:-translate-y-1 hover:bg-[#2C2D2B]"
+                      className="inline-flex w-full items-center justify-center rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/72 px-6 py-4 font-bold text-[#2D2825] shadow-[0_16px_40px_rgba(96,63,41,.08)] backdrop-blur transition hover:-translate-y-1 hover:bg-[#F7EFE3] sm:w-auto sm:px-7"
                     >
                       How it works
                     </a>
                   </div>
-                  <div className="mt-12 grid max-w-xl grid-cols-1 overflow-hidden rounded-2xl border border-[#E9DDC5]/16 bg-[#101211]/44 backdrop-blur sm:grid-cols-3">
+                  <div className="mt-12 grid w-full max-w-[350px] grid-cols-1 overflow-hidden rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/70 shadow-[0_18px_52px_rgba(96,63,41,.1)] backdrop-blur sm:max-w-xl sm:grid-cols-3">
                     {heroStats.map(([value, label]) => (
-                      <div key={label} className="border-b border-[#E9DDC5]/10 p-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
-                        <strong className="block text-2xl text-[#D79B62]">{value}</strong>
-                        <span className="text-sm text-[#C9BEAA]/70">{label}</span>
+                      <div key={label} className="border-b border-[#E3D1B8] p-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+                        <strong className="block text-2xl text-[#D96C4A]">{value}</strong>
+                        <span className="text-sm text-[#6E584B]">{label}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="rounded-[2rem] border border-[#E9DDC5]/14 bg-[#161716]/66 p-5 soft-shadow backdrop-blur">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem]">
+                <div className="rounded-[2rem] border border-[#E3D1B8] bg-[#FDFBF7]/74 p-4 warm-shadow backdrop-blur">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-[#EDE1CF] sm:aspect-[4/3] lg:aspect-[4/5]">
                     <img src="assets/midnight-ocean.png" alt="Midnight Ocean glaze bowl" className="h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#101211]/88 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2D2825]/72 via-transparent to-transparent" />
                     <div className="absolute bottom-0 p-6">
-                      <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#D79B62]">First bench stack</p>
-                      <h2 className="mt-3 font-serif text-4xl text-[#F0E7D2]">Midnight Ocean</h2>
-                      <p className="mt-3 max-w-sm text-[#D6CBB9]/78">
-                        Three studio-ready pots plus the recipe card for layering, firing, and test tiles.
+                      <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#F5D8C7]">First palette</p>
+                      <h2 className="mt-3 font-serif text-4xl text-[#FFF8EB]">Midnight Ocean</h2>
+                      <p className="mt-3 max-w-sm text-[#F8EAD6] opacity-90">
+                        Three studio-ready pots plus the exact layering recipe.
                       </p>
                     </div>
                   </div>
@@ -673,34 +648,37 @@
 
             <SwipeDeck />
 
-            <section id="how-it-works" className="bg-[#171918] px-5 py-24 md:px-8">
+            <section id="how-it-works" className="bg-[#F6ECDE] px-5 py-24 md:px-8">
               <div className="mx-auto max-w-6xl">
-                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#D79B62]">How it works</p>
-                <h2 className="max-w-3xl font-serif text-5xl leading-tight text-[#F0E7D2] md:text-6xl">
-                  From swipe to kiln shelf in three grounded steps.
+                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">How it works</p>
+                <h2 className="max-w-3xl font-serif text-5xl leading-tight text-[#2D2825] md:text-6xl">
+                  From palette to kiln shelf in three simple steps.
                 </h2>
                 <div className="mt-12 grid gap-5 md:grid-cols-3">
                   {[
-                    ["01", "Swipe & build your 3-color set.", "Open profiles, save the looks you love, and start with a €29 Base Set."],
-                    ["02", "Receive studio-ready 50ml pots.", "Secure, studio-ready packaging keeps every pot sealed and bench-ready."],
-                    ["03", "Fire with the included recipe card.", "Layering order, firing notes, and test tile prompts come with each set."],
+                    ["01", "Build your palette.", "Swipe the deck, open recipe profiles, and pick your €29 Base Set of 3 colors."],
+                    ["02", "Receive studio-ready pots.", "Secure, studio-ready packaging keeps every 50ml pot sealed and bench-ready."],
+                    ["03", "Fire with exact recipes.", "Layering order, firing notes, and test tile prompts come with each set."],
                   ].map(([number, title, copy]) => (
-                    <article key={number} className="rounded-[1.5rem] border border-[#E9DDC5]/12 bg-[#23231F]/42 p-7 soft-shadow">
-                      <div className="mb-10 flex h-11 w-11 items-center justify-center rounded-full bg-[#B34700]/16 text-sm font-bold text-[#D79B62]">{number}</div>
-                      <h3 className="font-serif text-3xl leading-tight text-[#F0E7D2]">{title}</h3>
-                      <p className="mt-4 leading-7 text-[#C9BEAA]/72">{copy}</p>
+                    <article key={number} className="rounded-[1.5rem] border border-[#E3D1B8] bg-[#FDFBF7]/74 p-7 warm-shadow">
+                      <div className="mb-10 flex h-11 w-11 items-center justify-center rounded-full bg-[#D96C4A]/13 text-sm font-bold text-[#D96C4A]">{number}</div>
+                      <h3 className="font-serif text-3xl leading-tight text-[#2D2825]">{title}</h3>
+                      <p className="mt-4 leading-7 text-[#665950]">{copy}</p>
                     </article>
                   ))}
                 </div>
               </div>
             </section>
 
-            <section id="waitlist" className="clay-panel relative isolate overflow-hidden px-5 py-24 md:px-8">
-              <div className="mx-auto grid max-w-5xl items-center gap-10 rounded-[2rem] border border-[#E9DDC5]/14 bg-[#111313]/76 p-8 soft-shadow backdrop-blur md:grid-cols-[1fr_420px] md:p-10">
-                <div>
-                  <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#D79B62]">Early access</p>
-                  <h2 className="font-serif text-5xl leading-tight text-[#F0E7D2]">Ready to glaze smarter?</h2>
-                  <p className="mt-5 text-lg leading-8 text-[#D6CBB9]/76">
+            <section id="waitlist" className="bg-[#FDFBF7] px-5 py-24 md:px-8">
+              <div className="mx-auto grid max-w-5xl items-center gap-10 rounded-[2rem] border border-[#E3D1B8] bg-[#FAFAF8] p-8 shadow-[0_30px_90px_rgba(96,63,41,.13)] md:grid-cols-[1fr_420px] md:p-10">
+                <div className="absolute hidden" aria-hidden="true" />
+                <div className="border-l-4 border-[#D96C4A] pl-6">
+                  <p className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">
+                    <IconSpark className="h-4 w-4" /> Early access
+                  </p>
+                  <h2 className="font-serif text-5xl leading-tight text-[#2D2825]">Ready to glaze smarter?</h2>
+                  <p className="mt-5 text-lg leading-8 text-[#665950]">
                     Join the waitlist. Early members get priority access and a free 4th color in their first €29 Base Set.
                   </p>
                 </div>
@@ -711,15 +689,15 @@
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="your@email.com"
-                    className="h-14 w-full rounded-2xl border border-[#E9DDC5]/14 bg-[#1C1E1F]/72 px-5 text-[#F0E7D2] outline-none placeholder:text-[#9F9788] focus:border-[#B34700]"
+                    className="soft-input h-14 w-full rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7] px-5 text-[#2D2825] outline-none placeholder:text-[#A28C7D] focus:border-[#D96C4A]"
                   />
                   <button
                     type="submit"
-                    className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[#B34700] font-bold text-[#FFF3DE] transition hover:bg-[#C4550B]"
+                    className="inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] font-bold text-[#FFF8EB] shadow-[0_18px_48px_rgba(217,108,74,.23)] transition hover:bg-[#C85E3F]"
                   >
                     Join waitlist <IconArrow className="h-5 w-5" />
                   </button>
-                  <p className="min-h-6 text-center text-sm font-semibold text-[#AEB7A2]">
+                  <p className="min-h-6 text-center text-sm font-semibold text-[#667760]">
                     {submitted ? "You're on the waitlist. Your free 4th color is reserved." : ""}
                   </p>
                 </form>
