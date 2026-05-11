@@ -78,6 +78,33 @@
           linear-gradient(180deg, #fdfbf7 0%, #faf7ef 46%, #f6ecdc 100%);
       }
 
+      .hero-start {
+        background:
+          linear-gradient(90deg, rgba(253, 251, 247, 0.9) 0%, rgba(253, 251, 247, 0.66) 40%, rgba(253, 251, 247, 0.18) 100%),
+          linear-gradient(180deg, rgba(253, 251, 247, 0.18), rgba(246, 236, 222, 0.42)),
+          url("assets/studio.jpg");
+        background-position: center;
+        background-size: cover;
+      }
+
+      .product-glow {
+        box-shadow:
+          0 36px 100px rgba(116, 77, 48, 0.18),
+          0 14px 38px rgba(116, 77, 48, 0.1);
+      }
+
+      .packaging-photo {
+        background-image: url("assets/verpakking.jpg");
+        background-position: 58% 58%;
+        background-size: cover;
+      }
+
+      @media (max-width: 640px) {
+        .packaging-photo {
+          background-position: 62% 76%;
+        }
+      }
+
       .paper-panel {
         background:
           linear-gradient(135deg, rgba(253, 251, 247, 0.94), rgba(244, 233, 216, 0.78)),
@@ -118,7 +145,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      const { useEffect, useMemo, useState } = React;
+      const { useEffect, useState } = React;
       const {
         AnimatePresence,
         motion,
@@ -451,7 +478,13 @@
 
         return (
           <section id="swipe-deck" className="relative overflow-hidden bg-[#FAFAF8] px-5 py-24 text-[#2D2825] md:px-8">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(217,108,74,.09),transparent_28%),radial-gradient(circle_at_82%_70%,rgba(138,154,134,.13),transparent_32%)]" />
+            <img
+              src="assets/dark-workbench.jpg"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover opacity-[0.08] mix-blend-multiply"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(217,108,74,.12),transparent_28%),radial-gradient(circle_at_82%_70%,rgba(253,251,247,.82),transparent_34%),linear-gradient(180deg,rgba(250,250,248,.9),rgba(250,250,248,.76))]" />
             <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[.88fr_1.12fr]">
               <div>
                 <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">
@@ -557,15 +590,6 @@
         const [email, setEmail] = useState("");
         const [submitted, setSubmitted] = useState(false);
 
-        const heroStats = useMemo(
-          () => [
-            ["€29", "Base Set"],
-            ["3", "50ml pots"],
-            ["0", "wasted jars"],
-          ],
-          []
-        );
-
         useEffect(() => {
           if (!window.location.hash) return;
           window.requestAnimationFrame(() => {
@@ -583,8 +607,8 @@
 
         return (
           <main className="min-h-screen bg-[#FDFBF7] text-[#2D2825]">
-            <section className="sunlit-bg relative isolate overflow-hidden px-5 py-8 md:px-8 md:py-10">
-              <nav className="mx-auto flex max-w-6xl items-center justify-between">
+            <section className="hero-start relative isolate min-h-[92svh] overflow-hidden px-5 py-8 md:px-8 md:py-10">
+              <nav className="relative z-10 mx-auto flex max-w-6xl items-center justify-between">
                 <a href="#" className="font-serif text-2xl font-semibold tracking-tight text-[#2D2825]">
                   Glaze<span className="text-[#D96C4A]">Recipes</span>
                 </a>
@@ -592,57 +616,37 @@
                   href="#waitlist"
                   className="hidden rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-5 py-2.5 text-sm font-semibold text-[#2D2825] shadow-[0_12px_30px_rgba(96,63,41,.08)] backdrop-blur transition hover:bg-[#F7EFE3] sm:inline-flex"
                 >
-                  Join waitlist
+                  Waitlist
                 </a>
               </nav>
 
-              <div className="mx-auto grid min-w-0 max-w-6xl items-center gap-14 pb-20 pt-16 lg:grid-cols-[1.02fr_.98fr] lg:pb-28 lg:pt-24">
+              <div className="relative z-10 mx-auto grid min-w-0 max-w-6xl items-center gap-10 pb-12 pt-14 lg:min-h-[calc(92svh-92px)] lg:grid-cols-[.7fr_1.3fr] lg:pb-16 lg:pt-12">
                 <div className="min-w-0">
-                  <p className="mb-6 inline-flex max-w-full rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/78 px-4 py-2 text-sm font-semibold text-[#7A5742] shadow-[0_12px_30px_rgba(96,63,41,.07)]">
-                    Custom glaze sets for small studio runs
+                  <p className="inline-flex rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/74 px-4 py-2 text-sm font-semibold text-[#7A5742] shadow-[0_12px_30px_rgba(96,63,41,.07)] backdrop-blur">
+                    €29 Base Set
                   </p>
-                  <h1 className="max-w-[10ch] break-words font-serif text-[46px] leading-[.94] tracking-[-0.01em] text-[#2D2825] sm:max-w-4xl sm:text-6xl md:text-8xl">
-                    Stop paying €80 for glazes you'll never finish.
+                  <h1 className="mt-5 max-w-[8ch] font-serif text-[58px] leading-[.88] tracking-[-0.01em] text-[#2D2825] sm:text-7xl md:text-8xl">
+                    Glaze Recipes
                   </h1>
-                  <p className="mt-7 max-w-[335px] text-lg leading-8 text-[#665950] sm:max-w-2xl sm:text-xl sm:leading-9">
-                    Build a €29 custom Base Set with 3 colors, 50ml each. Buy what you brush. Stop letting €20 jars dry out on your shelf.
-                  </p>
-                  <div className="mt-10 flex w-full max-w-[350px] flex-col gap-4 sm:max-w-none sm:flex-row">
+                  <div className="mt-6 flex max-w-[380px] flex-wrap gap-2">
+                    {["3 colors", "50ml pots", "Exact recipe", "Secure packaging"].map((term) => (
+                      <span key={term} className="rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-3.5 py-2 text-sm font-semibold text-[#5D4E45] shadow-[0_10px_24px_rgba(96,63,41,.06)] backdrop-blur">
+                        {term}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-8 flex w-full max-w-[260px]">
                     <a
                       href="#swipe-deck"
-                      className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F] sm:w-auto sm:px-7"
+                      className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
                     >
-                      Open the recipe deck <IconArrow className="h-5 w-5" />
+                      Start swiping <IconArrow className="h-5 w-5" />
                     </a>
-                    <a
-                      href="#how-it-works"
-                      className="inline-flex w-full items-center justify-center rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/72 px-6 py-4 font-bold text-[#2D2825] shadow-[0_16px_40px_rgba(96,63,41,.08)] backdrop-blur transition hover:-translate-y-1 hover:bg-[#F7EFE3] sm:w-auto sm:px-7"
-                    >
-                      How it works
-                    </a>
-                  </div>
-                  <div className="mt-12 grid w-full max-w-[350px] grid-cols-1 overflow-hidden rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7]/70 shadow-[0_18px_52px_rgba(96,63,41,.1)] backdrop-blur sm:max-w-xl sm:grid-cols-3">
-                    {heroStats.map(([value, label]) => (
-                      <div key={label} className="border-b border-[#E3D1B8] p-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
-                        <strong className="block text-2xl text-[#D96C4A]">{value}</strong>
-                        <span className="text-sm text-[#6E584B]">{label}</span>
-                      </div>
-                    ))}
                   </div>
                 </div>
 
-                <div className="rounded-[2rem] border border-[#E3D1B8] bg-[#FDFBF7]/74 p-4 warm-shadow backdrop-blur">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-[#EDE1CF] sm:aspect-[4/3] lg:aspect-[4/5]">
-                    <img src="assets/midnight-ocean.png" alt="Midnight Ocean glaze bowl" className="h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#2D2825]/72 via-transparent to-transparent" />
-                    <div className="absolute bottom-0 p-6">
-                      <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#F5D8C7]">First palette</p>
-                      <h2 className="mt-3 font-serif text-4xl text-[#FFF8EB]">Midnight Ocean</h2>
-                      <p className="mt-3 max-w-sm text-[#F8EAD6] opacity-90">
-                        Three studio-ready pots plus the exact layering recipe.
-                      </p>
-                    </div>
-                  </div>
+                <div className="product-glow min-w-0 w-full max-w-full overflow-hidden rounded-[2rem] border border-[#E3D1B8] bg-[#FDFBF7]/78 p-3 backdrop-blur sm:p-4">
+                  <div className="packaging-photo aspect-[4/3] min-w-0 overflow-hidden rounded-[1.5rem] bg-[#EDE1CF] sm:aspect-[11/6]" role="img" aria-label="GlazeRecipes packaged glaze kit" />
                 </div>
               </div>
             </section>
