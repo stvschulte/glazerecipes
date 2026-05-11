@@ -376,9 +376,12 @@
               y: index * 15,
             }}
             onDragEnd={(_, info) => {
-              if (info.offset.x > 120 || info.velocity.x > 720) {
+              const offset = info.offset.x;
+              const velocity = info.velocity.x;
+
+              if (offset > 120 || (offset > 42 && velocity > 720)) {
                 onSwipe("right");
-              } else if (info.offset.x < -120 || info.velocity.x < -720) {
+              } else if (offset < -120 || (offset < -42 && velocity < -720)) {
                 onSwipe("left");
               }
             }}
@@ -434,6 +437,8 @@
       }
 
       function ExpandedRecipe({ recipe, onClose, onAdd }) {
+        const [adding, setAdding] = useState(false);
+
         useEffect(() => {
           const previous = document.body.style.overflow;
           document.body.style.overflow = "hidden";
@@ -442,6 +447,12 @@
           };
         }, []);
 
+        function handleAdd() {
+          if (adding) return;
+          setAdding(true);
+          window.setTimeout(() => onAdd(recipe), 280);
+        }
+
         return (
           <motion.div
             className="fixed inset-0 z-[70] grid place-items-center overflow-y-auto bg-[#2D2825]/18 px-4 py-5 backdrop-blur-xl md:px-8 md:py-10"
@@ -449,19 +460,20 @@
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <button
-              type="button"
-              onClick={onClose}
-              className="fixed right-5 top-5 z-[80] grid h-12 w-12 place-items-center rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/92 text-[#2D2825] shadow-[0_18px_50px_rgba(96,63,41,.18)]"
-              aria-label="Close recipe profile"
-            >
-              <IconX className="h-6 w-6" />
-            </button>
-
             <motion.article
               layoutId={`recipe-card-${recipe.id}`}
               className="relative mx-auto max-h-[calc(100svh-2rem)] w-full max-w-5xl overflow-y-auto rounded-[2rem] border border-[#E3D1B8] bg-[#FDFBF7] warm-shadow"
+              animate={adding ? { x: 1000, opacity: 0, rotate: 7 } : { x: 0, opacity: 1, rotate: 0 }}
+              transition={{ duration: adding ? 0.28 : 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
+              <button
+                type="button"
+                onClick={onClose}
+                className="absolute right-3 top-3 z-30 grid h-11 w-11 place-items-center rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/94 text-[#2D2825] shadow-[0_14px_38px_rgba(96,63,41,.18)] backdrop-blur md:right-4 md:top-4"
+                aria-label="Close recipe profile"
+              >
+                <IconX className="h-5 w-5" />
+              </button>
               <div className="grid lg:grid-cols-[1.04fr_.96fr]">
                 <div className="relative min-h-[320px] bg-[#EDE1CF] sm:min-h-[380px] lg:min-h-[620px]">
                   <motion.img
@@ -508,7 +520,8 @@
 
                   <button
                     type="button"
-                    onClick={() => onAdd(recipe)}
+                    onClick={handleAdd}
+                    disabled={adding}
                     className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-5 font-bold text-[#FFF8EB] shadow-[0_20px_50px_rgba(217,108,74,.28)] transition hover:-translate-y-0.5 hover:bg-[#C85E3F]"
                   >
                     Add this €29 Set to Waitlist
@@ -548,6 +561,8 @@
             setSaved((items) => (items.includes(topCard.look) ? items : [...items, topCard.look]));
             setExpanded(topCard);
             showToast("Recipe added to your set!");
+          } else {
+            setExpanded(null);
           }
 
           setCards((items) => items.slice(1));
@@ -711,16 +726,15 @@
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(217,108,74,.1),transparent_28%),radial-gradient(circle_at_84%_68%,rgba(138,154,134,.13),transparent_30%)]" />
             <div className="relative mx-auto min-w-0 max-w-6xl">
               <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
-                <div className="min-w-0 space-y-8">
-                  <div className="max-w-2xl min-w-0">
-                    <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">Build your own set</p>
-                    <h2 className="whitespace-normal break-words font-serif text-3xl leading-tight md:text-5xl">Build a set yourself.</h2>
-                    <p className="mt-5 max-w-xl text-lg leading-8 text-[#665950]">
-                      Start with 3 jars for €29. Every extra 50ml pot adds €5.
-                    </p>
-                  </div>
+                <div className="order-1 max-w-2xl min-w-0 lg:col-start-1 lg:row-start-1">
+                  <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">Build your own set</p>
+                  <h2 className="whitespace-normal break-words font-serif text-3xl leading-tight md:text-5xl">Build a set yourself.</h2>
+                  <p className="mt-5 max-w-xl text-lg leading-8 text-[#665950]">
+                    Start with 3 jars for €29. Every extra 50ml pot adds €5.
+                  </p>
+                </div>
 
-                  <aside className="min-w-0 rounded-[2rem] border border-[#E3D1B8] bg-[#FAFAF8]/78 p-5 custom-box-shadow md:p-6">
+                <aside className="order-2 min-w-0 rounded-[2rem] border border-[#E3D1B8] bg-[#FAFAF8]/78 p-5 custom-box-shadow md:p-6 lg:col-start-1 lg:row-start-2">
                     <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#B88746]">Custom set</p>
                     <h3 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">€{currentPrice}</h3>
                     <p className="mt-4 leading-7 text-[#665950]">
@@ -754,11 +768,9 @@
                         </motion.p>
                       )}
                     </AnimatePresence>
-                  </aside>
-                </div>
+                </aside>
 
-                <div className="min-w-0 space-y-8">
-                  <div className="min-w-0 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/76 p-4 custom-box-shadow md:p-5">
+                <div className="order-3 min-w-0 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/76 p-4 custom-box-shadow md:p-5 lg:col-start-2 lg:row-start-1">
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-4">
                       <span className="text-sm font-bold uppercase tracking-[0.22em] text-[#8A9A86]">Palette</span>
                       <span className="rounded-full bg-[#D96C4A]/12 px-3 py-1 text-sm font-bold text-[#B85F42]">
@@ -795,9 +807,9 @@
                         </motion.button>
                       ))}
                     </div>
-                  </div>
+                </div>
 
-                  <div className="min-w-0 rounded-[2rem] border border-[#D9C5AA] bg-[#F4E9D8] p-4 custom-box-shadow md:p-7">
+                <div className="order-4 min-w-0 rounded-[2rem] border border-[#D9C5AA] bg-[#F4E9D8] p-4 custom-box-shadow md:p-7 lg:col-start-2 lg:row-start-2">
                     <div className="min-w-0 rounded-[1.5rem] border border-[#CDB18D] bg-[linear-gradient(135deg,#FDFBF7,#EFE0C8)] p-4 md:p-5">
                       <div className="mb-5 flex min-w-0 flex-wrap items-center justify-between gap-4">
                         <div className="min-w-0">
@@ -870,7 +882,6 @@
                         })}
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -933,7 +944,7 @@
                       href="#swipe-deck"
                       className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
                     >
-                      See how it works <IconArrow className="h-5 w-5" />
+                      Start swiping <IconArrow className="h-5 w-5" />
                     </a>
                   </div>
                 </div>
