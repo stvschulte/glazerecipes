@@ -139,6 +139,28 @@
           inset 0 1px 0 rgba(255, 252, 245, 0.9),
           0 14px 30px rgba(116, 77, 48, 0.08);
       }
+
+      @media (max-width: 640px) {
+        .hero-haze {
+          background:
+            linear-gradient(180deg, rgba(253, 251, 247, 0.74), rgba(253, 251, 247, 0.44) 42%, rgba(253, 251, 247, 0.91) 100%),
+            linear-gradient(90deg, rgba(253, 251, 247, 0.86), rgba(253, 251, 247, 0.48));
+        }
+
+        .mobile-horizontal-scroll {
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          scroll-snap-type: x proximity;
+        }
+
+        .mobile-horizontal-scroll::-webkit-scrollbar {
+          display: none;
+        }
+
+        .mobile-snap {
+          scroll-snap-align: start;
+        }
+      }
     </style>
   </head>
   <body class="paper-grain">
@@ -317,15 +339,15 @@
                 src={slide.src}
                 alt=""
                 aria-hidden="true"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-[58%_center] sm:object-center"
                 initial={{ opacity: 0, scale: 1.035 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.01 }}
                 transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
               />
             </AnimatePresence>
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(253,251,247,.86),rgba(253,251,247,.66)_45%,rgba(253,251,247,.4)),linear-gradient(180deg,rgba(255,248,235,.42),rgba(244,233,216,.52))]" />
-            <div className="absolute bottom-7 right-7 z-10 flex gap-2">
+            <div className="hero-haze absolute inset-0 bg-[linear-gradient(90deg,rgba(253,251,247,.86),rgba(253,251,247,.66)_45%,rgba(253,251,247,.4)),linear-gradient(180deg,rgba(255,248,235,.42),rgba(244,233,216,.52))]" />
+            <div className="absolute bottom-5 right-5 z-10 flex gap-2 sm:bottom-7 sm:right-7">
               {heroSlides.map((item, dotIndex) => (
                 <span
                   key={item.id}
@@ -352,7 +374,7 @@
         return (
           <motion.article
             layoutId={`recipe-card-${recipe.id}`}
-            className="absolute inset-0 cursor-grab overflow-hidden rounded-[1.5rem] border border-[#E3D1B8] bg-[#F4E9D8] card-shadow active:cursor-grabbing"
+            className="absolute inset-0 cursor-grab overflow-hidden rounded-[1.25rem] border border-[#E3D1B8] bg-[#F4E9D8] card-shadow active:cursor-grabbing sm:rounded-[1.5rem]"
             custom={exitDirection}
             drag={active ? "x" : false}
             dragDirectionLock
@@ -415,15 +437,15 @@
                   Save
                 </motion.div>
 
-                <div className="absolute inset-x-0 bottom-0 p-6 pt-28">
+                <div className="absolute inset-x-0 bottom-0 p-4 pt-24 sm:p-6 sm:pt-28">
                   <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-[#F0D3BE]">
                     Swipe right for recipe
                   </p>
-                  <h3 className="font-serif text-4xl leading-none text-[#FFF8EB]">{recipe.look}</h3>
-                  <p className="mt-3 max-w-sm text-sm leading-6 text-[#F8EAD6] opacity-90">{recipe.mood}</p>
-                  <div className="mt-5 grid gap-2 sm:grid-cols-3">
+                  <h3 className="font-serif text-3xl leading-none text-[#FFF8EB] sm:text-4xl">{recipe.look}</h3>
+                  <p className="mt-3 max-w-sm text-[13px] leading-5 text-[#F8EAD6] opacity-90 sm:text-sm sm:leading-6">{recipe.mood}</p>
+                  <div className="mobile-horizontal-scroll mt-4 flex gap-2 overflow-x-auto pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0">
                     {recipe.palette.map((pot) => (
-                      <div key={pot.name} className="rounded-xl border border-[#FDFBF7]/24 bg-[#2D2825]/38 px-3 py-2 backdrop-blur">
+                      <div key={pot.name} className="mobile-snap min-w-[96px] rounded-xl border border-[#FDFBF7]/24 bg-[#2D2825]/38 px-3 py-2 backdrop-blur sm:min-w-0">
                         <span className="mb-1 block h-3 rounded-full" style={{ background: pot.color }} />
                         <span className="text-xs text-[#FFF8EB]">{pot.name}</span>
                       </div>
@@ -455,14 +477,14 @@
 
         return (
           <motion.div
-            className="fixed inset-0 z-[70] grid place-items-center overflow-y-auto bg-[#2D2825]/18 px-4 py-5 backdrop-blur-xl md:px-8 md:py-10"
+            className="fixed inset-0 z-[70] grid place-items-center overflow-y-auto bg-[#2D2825]/18 px-2 py-2 backdrop-blur-xl sm:px-4 sm:py-5 md:px-8 md:py-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.article
               layoutId={`recipe-card-${recipe.id}`}
-              className="relative mx-auto max-h-[calc(100svh-2rem)] w-full max-w-5xl overflow-y-auto rounded-[2rem] border border-[#E3D1B8] bg-[#FDFBF7] warm-shadow"
+              className="relative mx-auto max-h-[calc(100svh-.75rem)] w-full max-w-5xl overflow-y-auto rounded-[1.35rem] border border-[#E3D1B8] bg-[#FDFBF7] warm-shadow sm:max-h-[calc(100svh-2rem)] sm:rounded-[2rem]"
               animate={adding ? { x: 1000, opacity: 0, rotate: 7 } : { x: 0, opacity: 1, rotate: 0 }}
               transition={{ duration: adding ? 0.28 : 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
@@ -475,7 +497,7 @@
                 <IconX className="h-5 w-5" />
               </button>
               <div className="grid lg:grid-cols-[1.04fr_.96fr]">
-                <div className="relative min-h-[320px] bg-[#EDE1CF] sm:min-h-[380px] lg:min-h-[620px]">
+                <div className="relative min-h-[250px] bg-[#EDE1CF] sm:min-h-[380px] lg:min-h-[620px]">
                   <motion.img
                     layoutId={`recipe-image-${recipe.id}`}
                     src={recipe.image}
@@ -483,17 +505,17 @@
                     className="absolute inset-0 h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(45,40,37,.72),transparent_50%)]" />
-                  <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
+                  <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 md:p-10">
                     <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#F5D8C7]">Recipe Profile</p>
-                    <h2 className="mt-3 max-w-xl font-serif text-5xl leading-[.96] text-[#FFF8EB] md:text-7xl">
+                    <h2 className="mt-3 max-w-xl font-serif text-3xl leading-[.96] text-[#FFF8EB] sm:text-5xl md:text-7xl">
                       {recipe.title}
                     </h2>
-                    <p className="mt-5 max-w-lg text-lg leading-8 text-[#F8EAD6] opacity-90">{recipe.mood}</p>
+                    <p className="mt-3 max-w-lg text-sm leading-6 text-[#F8EAD6] opacity-90 sm:mt-5 sm:text-lg sm:leading-8">{recipe.mood}</p>
                   </div>
                 </div>
 
-                <div className="paper-panel p-6 md:p-8 lg:p-10">
-                  <div className="rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/72 p-5">
+                <div className="paper-panel p-4 sm:p-6 md:p-8 lg:p-10">
+                  <div className="rounded-[1.25rem] border border-[#E3D1B8] bg-[#FAFAF8]/72 p-4 sm:rounded-[1.5rem] sm:p-5">
                     <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#8A9A86]">The 3 required 50ml pots</p>
                     <div className="mt-4 grid gap-3">
                       {recipe.palette.map((pot) => (
@@ -505,14 +527,14 @@
                     </div>
                   </div>
 
-                  <section className="mt-6 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FDFBF7]/78 p-5">
+                  <section className="mt-5 rounded-[1.25rem] border border-[#E3D1B8] bg-[#FDFBF7]/78 p-4 sm:mt-6 sm:rounded-[1.5rem] sm:p-5">
                     <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#8A9A86]">Layering Recipe</p>
                     <p className="mt-2 text-sm text-[#7A5742]">Clay body: {recipe.clay}</p>
                     <div className="mt-5 space-y-4">
                       {recipe.layers.map(([label, copy]) => (
-                        <div key={label} className="grid grid-cols-[72px_1fr] gap-4 border-b border-[#E5D6BE] pb-4 last:border-b-0">
-                          <span className="font-serif text-xl font-semibold text-[#D96C4A]">{label}</span>
-                          <p className="text-base leading-7 text-[#4C4038]">{copy}</p>
+                        <div key={label} className="grid gap-1 border-b border-[#E5D6BE] pb-4 last:border-b-0 sm:grid-cols-[72px_1fr] sm:gap-4">
+                          <span className="font-serif text-lg font-semibold text-[#D96C4A] sm:text-xl">{label}</span>
+                          <p className="text-sm leading-6 text-[#4C4038] sm:text-base sm:leading-7">{copy}</p>
                         </div>
                       ))}
                     </div>
@@ -522,7 +544,7 @@
                     type="button"
                     onClick={handleAdd}
                     disabled={adding}
-                    className="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-5 font-bold text-[#FFF8EB] shadow-[0_20px_50px_rgba(217,108,74,.28)] transition hover:-translate-y-0.5 hover:bg-[#C85E3F]"
+                    className="mt-5 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-5 py-4 font-bold text-[#FFF8EB] shadow-[0_20px_50px_rgba(217,108,74,.28)] transition hover:-translate-y-0.5 hover:bg-[#C85E3F] sm:mt-6 sm:px-6 sm:py-5"
                   >
                     Add this €29 Set to Waitlist
                     <IconArrow className="h-5 w-5" />
@@ -575,20 +597,20 @@
         }
 
         return (
-          <section id="swipe-deck" className="studio-section relative overflow-hidden px-5 py-24 text-[#FFF8EB] md:px-8">
+          <section id="swipe-deck" className="studio-section relative overflow-hidden px-4 py-16 text-[#FFF8EB] md:px-8 md:py-24">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(217,108,74,.2),transparent_28%),linear-gradient(115deg,rgba(17,13,10,.78),rgba(17,13,10,.48)_48%,rgba(17,13,10,.72))]" />
-            <div className="relative mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[.88fr_1.12fr]">
+            <div className="relative mx-auto grid max-w-6xl items-center gap-9 lg:grid-cols-[.88fr_1.12fr] lg:gap-14">
               <div>
                 <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">
                   Recipe Swipe Deck
                 </p>
-                <h2 className="font-serif text-5xl leading-[.98] text-[#FFF8EB] md:text-6xl">
+                <h2 className="font-serif text-4xl leading-[.98] text-[#FFF8EB] md:text-6xl">
                   Let the fired glaze do the choosing for you.
                 </h2>
-                <p className="mt-6 max-w-xl text-lg leading-8 text-[#F6ECDE]/82">
+                <p className="mt-5 max-w-xl text-base leading-7 text-[#F6ECDE]/82 md:mt-6 md:text-lg md:leading-8">
                   Swipe right to save a combination and open its recipe profile. Swipe left to reject it and move to the next idea.
                 </p>
-                <div className="mt-8 rounded-2xl border border-[#F6ECDE]/18 bg-[#1F1813]/62 p-5 text-sm leading-6 text-[#F6ECDE]/80 shadow-[0_24px_70px_rgba(0,0,0,.28)] backdrop-blur">
+                <div className="mt-6 rounded-2xl border border-[#F6ECDE]/18 bg-[#1F1813]/62 p-4 text-sm leading-6 text-[#F6ECDE]/80 shadow-[0_24px_70px_rgba(0,0,0,.28)] backdrop-blur md:mt-8 md:p-5">
                   <strong className="block text-[#FFF8EB]">Simple by design:</strong>
                   A €29 Base Set includes 3 colors, 50ml each. Buy what you brush. Stop letting €20 jars dry out on your shelf.
                 </div>
@@ -599,8 +621,8 @@
                 )}
               </div>
 
-              <div className="mx-auto w-full max-w-[430px]">
-                <div className="relative h-[610px]">
+              <div className="mx-auto w-full max-w-[350px] sm:max-w-[430px]">
+                <div className="relative h-[500px] sm:h-[610px]">
                   <AnimatePresence custom={exitDirection}>
                     {cards.slice(0, 3).map((recipe, index) => (
                       <RecipeCard
@@ -631,11 +653,11 @@
                   )}
                 </div>
 
-                <div className="mt-8 flex items-center justify-center gap-5">
+                <div className="mt-5 flex items-center justify-center gap-5 sm:mt-8">
                   <button
                     type="button"
                     onClick={() => swipe("left")}
-                    className="grid h-16 w-16 place-items-center rounded-full border border-[#E3D1B8] bg-[#FDFBF7] text-[#7A5742] shadow-[0_18px_50px_rgba(96,63,41,.14)] transition hover:-translate-y-1 hover:bg-[#F6ECDE]"
+                    className="grid h-14 w-14 place-items-center rounded-full border border-[#E3D1B8] bg-[#FDFBF7] text-[#7A5742] shadow-[0_18px_50px_rgba(96,63,41,.14)] transition hover:-translate-y-1 hover:bg-[#F6ECDE] sm:h-16 sm:w-16"
                     aria-label="Skip recipe"
                   >
                     <IconX className="h-7 w-7" />
@@ -643,7 +665,7 @@
                   <button
                     type="button"
                     onClick={() => swipe("right")}
-                    className="grid h-20 w-20 place-items-center rounded-full bg-[#D96C4A] text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.28)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
+                    className="grid h-16 w-16 place-items-center rounded-full bg-[#D96C4A] text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.28)] transition hover:-translate-y-1 hover:bg-[#C85E3F] sm:h-20 sm:w-20"
                     aria-label="Save recipe"
                   >
                     <IconHeart className="h-8 w-8" />
@@ -722,10 +744,10 @@
         }
 
         return (
-          <section id="build-set" className="relative overflow-hidden bg-[#FDFBF7] px-4 py-24 text-[#2D2825] md:px-8">
+          <section id="build-set" className="relative overflow-hidden bg-[#FDFBF7] px-4 py-16 text-[#2D2825] md:px-8 md:py-24">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(217,108,74,.1),transparent_28%),radial-gradient(circle_at_84%_68%,rgba(138,154,134,.13),transparent_30%)]" />
             <div className="relative mx-auto min-w-0 max-w-6xl">
-              <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
+              <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start lg:gap-8">
                 <div className="order-1 max-w-2xl min-w-0 lg:col-start-1 lg:row-start-1">
                   <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">Build your own set</p>
                   <h2 className="whitespace-normal break-words font-serif text-3xl leading-tight md:text-5xl">Build a set yourself.</h2>
@@ -734,7 +756,7 @@
                   </p>
                 </div>
 
-                <aside className="order-2 min-w-0 rounded-[2rem] border border-[#E3D1B8] bg-[#FAFAF8]/78 p-5 custom-box-shadow md:p-6 lg:col-start-1 lg:row-start-2">
+                <aside className="order-4 min-w-0 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/78 p-4 custom-box-shadow sm:p-5 md:p-6 lg:order-none lg:col-start-1 lg:row-start-2 lg:self-stretch">
                     <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#B88746]">Custom set</p>
                     <h3 className="mt-3 font-serif text-3xl leading-tight md:text-4xl">€{currentPrice}</h3>
                     <p className="mt-4 leading-7 text-[#665950]">
@@ -770,14 +792,14 @@
                     </AnimatePresence>
                 </aside>
 
-                <div className="order-3 min-w-0 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/76 p-4 custom-box-shadow md:p-5 lg:col-start-2 lg:row-start-1">
+                <div className="order-2 min-w-0 rounded-[1.5rem] border border-[#E3D1B8] bg-[#FAFAF8]/76 p-4 custom-box-shadow md:p-5 lg:order-none lg:col-start-2 lg:row-start-1">
                     <div className="flex min-w-0 flex-wrap items-center justify-between gap-4">
                       <span className="text-sm font-bold uppercase tracking-[0.22em] text-[#8A9A86]">Palette</span>
                       <span className="rounded-full bg-[#D96C4A]/12 px-3 py-1 text-sm font-bold text-[#B85F42]">
                         {boxContents.length} selected
                       </span>
                     </div>
-                    <div className="mt-5 flex max-w-full touch-pan-x gap-3 overflow-x-auto overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch]">
+                    <div className="mobile-horizontal-scroll mt-5 flex max-w-full touch-pan-x gap-3 overflow-x-auto overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch]">
                       {glazeOptions.map((glaze) => (
                         <motion.button
                           key={glaze.id}
@@ -796,10 +818,10 @@
                             addColor(glaze);
                           }}
                           whileTap={{ scale: 0.94 }}
-                          className="group min-w-[132px] shrink-0 rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7] p-3 text-left shadow-[0_14px_34px_rgba(96,63,41,.08)] transition hover:-translate-y-0.5"
+                          className="mobile-snap group min-w-[116px] shrink-0 rounded-2xl border border-[#E3D1B8] bg-[#FDFBF7] p-3 text-left shadow-[0_14px_34px_rgba(96,63,41,.08)] transition hover:-translate-y-0.5 sm:min-w-[132px]"
                         >
                           <span
-                            className="block h-14 w-14 rounded-full border border-[#A77B5D]/20 shadow-[inset_0_10px_16px_rgba(255,252,245,.48),inset_0_-10px_18px_rgba(70,45,30,.18)]"
+                            className="block h-12 w-12 rounded-full border border-[#A77B5D]/20 shadow-[inset_0_10px_16px_rgba(255,252,245,.48),inset_0_-10px_18px_rgba(70,45,30,.18)] sm:h-14 sm:w-14"
                             style={{ background: glaze.color }}
                           />
                           <span className="mt-3 block text-sm font-bold text-[#2D2825]">{glaze.name}</span>
@@ -809,19 +831,19 @@
                     </div>
                 </div>
 
-                <div className="order-4 min-w-0 rounded-[2rem] border border-[#D9C5AA] bg-[#F4E9D8] p-4 custom-box-shadow md:p-7 lg:col-start-2 lg:row-start-2">
-                    <div className="min-w-0 rounded-[1.5rem] border border-[#CDB18D] bg-[linear-gradient(135deg,#FDFBF7,#EFE0C8)] p-4 md:p-5">
+                <div className="order-3 min-w-0 rounded-[1.5rem] border border-[#D9C5AA] bg-[#F4E9D8] p-3 custom-box-shadow sm:p-4 md:p-7 lg:order-none lg:col-start-2 lg:row-start-2">
+                    <div className="min-w-0 rounded-[1.35rem] border border-[#CDB18D] bg-[linear-gradient(135deg,#FDFBF7,#EFE0C8)] p-3 sm:p-4 md:p-5">
                       <div className="mb-5 flex min-w-0 flex-wrap items-center justify-between gap-4">
                         <div className="min-w-0">
                           <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#B88746]">Custom Base Set Box</p>
-                          <h3 className="mt-1 whitespace-normal break-words font-serif text-2xl leading-tight text-[#2D2825] md:text-3xl">Minimum 3 pots, 50ml each</h3>
+                          <h3 className="mt-1 whitespace-normal break-words font-serif text-xl leading-tight text-[#2D2825] sm:text-2xl md:text-3xl">Minimum 3 pots, 50ml each</h3>
                         </div>
                         <span className="rounded-full border border-[#D96C4A]/24 bg-[#D96C4A]/10 px-4 py-2 text-sm font-bold text-[#B85F42]">
                           €{currentPrice}
                         </span>
                       </div>
 
-                      <div className="grid min-w-0 gap-4 sm:grid-cols-2">
+                      <div className="grid min-w-0 grid-cols-3 gap-2 sm:grid-cols-2 sm:gap-4">
                         {Array.from({ length: slotCount }).map((_, slot) => {
                           const jar = boxContents[slot];
                           const isExtra = slot >= 3;
@@ -830,9 +852,9 @@
                             <motion.div
                               key={slot}
                               layout
-                              className="relative min-h-[210px] rounded-[1.35rem] border border-dashed border-[#BFA384] bg-[#FDFBF7]/72 p-4"
+                              className="relative min-h-[142px] rounded-[1rem] border border-dashed border-[#BFA384] bg-[#FDFBF7]/72 p-2 sm:min-h-[210px] sm:rounded-[1.35rem] sm:p-4"
                             >
-                              <span className="absolute left-4 top-4 text-xs font-bold uppercase tracking-[0.18em] text-[#A28C7D]">
+                              <span className="absolute left-2 top-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#A28C7D] sm:left-4 sm:top-4 sm:text-xs sm:tracking-[0.18em]">
                                 {isExtra ? `Extra +€5` : `Base ${slot + 1}`}
                               </span>
                               <div className="grid h-full place-items-center pt-6">
@@ -851,18 +873,18 @@
                                       className="group flex flex-col items-center"
                                       aria-label={`Remove ${jar.name} from custom set`}
                                     >
-                                      <span className="relative block h-24 w-20 rounded-[1.35rem_1.35rem_1rem_1rem] border border-[#A77B5D]/22 bg-[#FDFBF7] shadow-[0_18px_34px_rgba(96,63,41,.18)]">
-                                        <span className="absolute left-1/2 top-[-10px] h-4 w-12 -translate-x-1/2 rounded-full border border-[#A77B5D]/18 bg-[#F9F0E2]" />
+                                      <span className="relative block h-14 w-11 rounded-[.9rem_.9rem_.7rem_.7rem] border border-[#A77B5D]/22 bg-[#FDFBF7] shadow-[0_14px_24px_rgba(96,63,41,.16)] sm:h-24 sm:w-20 sm:rounded-[1.35rem_1.35rem_1rem_1rem] sm:shadow-[0_18px_34px_rgba(96,63,41,.18)]">
+                                        <span className="absolute left-1/2 top-[-6px] h-2.5 w-8 -translate-x-1/2 rounded-full border border-[#A77B5D]/18 bg-[#F9F0E2] sm:top-[-10px] sm:h-4 sm:w-12" />
                                         <span
-                                          className="absolute inset-x-3 bottom-3 top-5 rounded-[1rem] shadow-[inset_0_10px_18px_rgba(255,255,255,.22),inset_0_-10px_18px_rgba(46,32,22,.18)]"
+                                          className="absolute inset-x-2 bottom-2 top-4 rounded-[.75rem] shadow-[inset_0_10px_18px_rgba(255,255,255,.22),inset_0_-10px_18px_rgba(46,32,22,.18)] sm:inset-x-3 sm:bottom-3 sm:top-5 sm:rounded-[1rem]"
                                           style={{ background: jar.color }}
                                         />
-                                        <span className="absolute -right-2 -top-2 grid h-7 w-7 place-items-center rounded-full bg-[#D96C4A] text-[#FFF8EB] opacity-0 transition group-hover:opacity-100">
-                                          <IconX className="h-4 w-4" />
+                                        <span className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-[#D96C4A] text-[#FFF8EB] opacity-100 transition sm:h-7 sm:w-7 sm:opacity-0 sm:group-hover:opacity-100">
+                                          <IconX className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                                         </span>
                                       </span>
-                                      <span className="mt-3 text-sm font-bold text-[#2D2825]">{jar.name}</span>
-                                      <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8A9A86]">Remove</span>
+                                      <span className="mt-2 max-w-full truncate text-center text-xs font-bold text-[#2D2825] sm:mt-3 sm:text-sm">{jar.name}</span>
+                                      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8A9A86] sm:text-xs sm:tracking-[0.16em]">Remove</span>
                                     </motion.button>
                                   ) : (
                                     <motion.div
@@ -870,9 +892,9 @@
                                       initial={{ opacity: 0 }}
                                       animate={{ opacity: 1 }}
                                       exit={{ opacity: 0 }}
-                                      className="text-center text-sm font-semibold text-[#A28C7D]"
+                                      className="px-1 text-center text-xs font-semibold leading-5 text-[#A28C7D] sm:text-sm"
                                     >
-                                      Empty 50ml pot
+                                      Empty pot
                                     </motion.div>
                                   )}
                                 </AnimatePresence>
@@ -933,10 +955,10 @@
 
         return (
           <main className="min-h-screen overflow-x-hidden bg-[#FDFBF7] text-[#2D2825]">
-            <section className="relative isolate min-h-screen overflow-hidden bg-[#FDFBF7] px-5 py-8 text-[#2D2825] md:px-8 md:py-10">
+            <section className="relative isolate min-h-[92svh] overflow-hidden bg-[#FDFBF7] px-4 py-5 text-[#2D2825] sm:min-h-screen sm:px-5 sm:py-8 md:px-8 md:py-10">
               <HeroSlideshow />
               <nav className="relative z-10 mx-auto flex max-w-6xl items-center justify-between">
-                <a href="#" className="font-serif text-2xl font-semibold tracking-tight text-[#2D2825]">
+                <a href="#" className="font-serif text-xl font-semibold tracking-tight text-[#2D2825] sm:text-2xl">
                   Glaze<span className="text-[#D96C4A]">Recipes</span>
                 </a>
                 <a
@@ -947,26 +969,26 @@
                 </a>
               </nav>
 
-              <div className="relative z-10 mx-auto flex min-h-[calc(100vh-92px)] max-w-6xl items-center pb-16 pt-14">
+              <div className="relative z-10 mx-auto flex min-h-[calc(92svh-64px)] max-w-6xl items-end pb-10 pt-8 sm:min-h-[calc(100vh-92px)] sm:items-center sm:pb-16 sm:pt-14">
                 <div className="max-w-3xl">
-                  <p className="inline-flex rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-4 py-2 text-sm font-semibold text-[#7A5742] shadow-[0_12px_30px_rgba(96,63,41,.08)] backdrop-blur">
+                  <p className="inline-flex rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-3.5 py-2 text-xs font-semibold text-[#7A5742] shadow-[0_12px_30px_rgba(96,63,41,.08)] backdrop-blur sm:px-4 sm:text-sm">
                     €29 Base Set
                   </p>
-                  <h1 className="mt-5 max-w-[8ch] font-serif text-6xl leading-[.88] text-[#2D2825] sm:text-7xl md:text-8xl">
+                  <h1 className="mt-4 max-w-[8ch] font-serif text-[4rem] leading-[.86] text-[#2D2825] sm:mt-5 sm:text-7xl md:text-8xl">
                     Glaze Recipes
                   </h1>
-                  <div className="mt-6 flex max-w-[410px] flex-wrap gap-2">
+                  <div className="mt-5 flex max-w-[330px] flex-wrap gap-2 sm:mt-6 sm:max-w-[410px]">
                     {["3 colors", "50ml pots", "Exact recipe", "Secure packaging"].map((term) => (
-                      <span key={term} className="rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-3.5 py-2 text-sm font-semibold text-[#5D4E45] shadow-[0_10px_24px_rgba(96,63,41,.06)] backdrop-blur">
+                      <span key={term} className="rounded-full border border-[#E3D1B8] bg-[#FDFBF7]/72 px-3 py-1.5 text-xs font-semibold text-[#5D4E45] shadow-[0_10px_24px_rgba(96,63,41,.06)] backdrop-blur sm:px-3.5 sm:py-2 sm:text-sm">
                         {term}
                       </span>
                     ))}
                   </div>
-                  <div className="mt-8 flex w-full max-w-[260px]">
+                  <div className="mt-7 flex w-full max-w-[230px] sm:mt-8 sm:max-w-[260px]">
                     <button
                       type="button"
                       onClick={scrollToSwipeDeck}
-                      className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-6 py-4 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F]"
+                      className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#D96C4A] px-5 py-3.5 font-bold text-[#FFF8EB] shadow-[0_22px_58px_rgba(217,108,74,.26)] transition hover:-translate-y-1 hover:bg-[#C85E3F] sm:px-6 sm:py-4"
                     >
                       Start swiping <IconArrow className="h-5 w-5" />
                     </button>
@@ -975,22 +997,22 @@
               </div>
             </section>
 
-            <section id="how-it-works" className="relative overflow-hidden bg-[#F6ECDE] px-5 py-24 text-[#2D2825] md:px-8">
+            <section id="how-it-works" className="relative overflow-hidden bg-[#F6ECDE] px-4 py-16 text-[#2D2825] md:px-8 md:py-24">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(217,108,74,.08),transparent_28%),radial-gradient(circle_at_84%_70%,rgba(138,154,134,.1),transparent_32%)]" />
               <div className="relative mx-auto max-w-6xl">
                 <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#B88746]">How it works</p>
-                <h2 className="max-w-3xl whitespace-normal break-words font-serif text-4xl leading-tight text-[#2D2825] md:text-6xl">
+                <h2 className="max-w-3xl whitespace-normal break-words font-serif text-3xl leading-tight text-[#2D2825] sm:text-4xl md:text-6xl">
                   From palette to kiln shelf in three simple steps.
                 </h2>
-                <div className="mt-12 grid gap-5 md:grid-cols-3">
+                <div className="mt-8 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-5">
                   {[
                     ["01", "Build your palette.", "Swipe the deck, open recipe profiles, and pick your €29 Base Set of 3 colors."],
                     ["02", "Receive studio-ready pots.", "Secure, studio-ready packaging keeps every 50ml pot sealed and bench-ready."],
                     ["03", "Fire with exact recipes.", "Layering order, firing notes, and test tile prompts come with each set."],
                   ].map(([number, title, copy]) => (
-                    <article key={number} className="rounded-[1.5rem] border border-[#E3D1B8] bg-[#FDFBF7]/74 p-7 warm-shadow">
-                      <div className="mb-10 flex h-11 w-11 items-center justify-center rounded-full bg-[#D96C4A]/13 text-sm font-bold text-[#D96C4A]">{number}</div>
-                      <h3 className="font-serif text-3xl leading-tight text-[#2D2825]">{title}</h3>
+                    <article key={number} className="rounded-[1.35rem] border border-[#E3D1B8] bg-[#FDFBF7]/74 p-5 warm-shadow md:rounded-[1.5rem] md:p-7">
+                      <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-full bg-[#D96C4A]/13 text-sm font-bold text-[#D96C4A] md:mb-10 md:h-11 md:w-11">{number}</div>
+                      <h3 className="font-serif text-2xl leading-tight text-[#2D2825] md:text-3xl">{title}</h3>
                       <p className="mt-4 leading-7 text-[#665950]">{copy}</p>
                     </article>
                   ))}
@@ -1002,16 +1024,16 @@
 
             <BuildYourOwnSet />
 
-            <section id="waitlist" className="workbench-section relative overflow-hidden px-5 py-24 text-[#FFF8EB] md:px-8">
+            <section id="waitlist" className="workbench-section relative overflow-hidden px-4 py-16 text-[#FFF8EB] md:px-8 md:py-24">
               <div className="absolute inset-0 bg-black/50" />
-              <div className="relative mx-auto grid min-w-0 max-w-5xl items-center gap-10 rounded-[2rem] border border-[#FFF8EB]/16 bg-[#1F1813]/68 p-6 shadow-[0_30px_90px_rgba(0,0,0,.28)] backdrop-blur md:grid-cols-[minmax(0,1fr)_420px] md:p-10">
+              <div className="relative mx-auto grid min-w-0 max-w-5xl items-center gap-8 rounded-[1.5rem] border border-[#FFF8EB]/16 bg-[#1F1813]/68 p-5 shadow-[0_30px_90px_rgba(0,0,0,.28)] backdrop-blur md:grid-cols-[minmax(0,1fr)_420px] md:gap-10 md:rounded-[2rem] md:p-10">
                 <div className="absolute hidden" aria-hidden="true" />
-                <div className="border-l-4 border-[#D96C4A] pl-6">
-                  <p className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.28em] text-[#F0B184]">
+                <div className="border-l-4 border-[#D96C4A] pl-4 md:pl-6">
+                  <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#F0B184] sm:text-sm sm:tracking-[0.28em]">
                     <IconSpark className="h-4 w-4" /> Early access
                   </p>
-                  <h2 className="whitespace-normal break-words font-serif text-4xl leading-tight text-[#FFF8EB] md:text-5xl">Ready to glaze smarter?</h2>
-                  <p className="mt-5 text-lg leading-8 text-[#F6ECDE]/84">
+                  <h2 className="whitespace-normal break-words font-serif text-3xl leading-tight text-[#FFF8EB] md:text-5xl">Ready to glaze smarter?</h2>
+                  <p className="mt-5 text-base leading-7 text-[#F6ECDE]/84 md:text-lg md:leading-8">
                     Join the waitlist. Early members get priority access and a free 4th color in their first €29 Base Set.
                   </p>
                 </div>

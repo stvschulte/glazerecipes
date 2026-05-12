@@ -28,13 +28,13 @@ hide_streamlit_style = """
 
     @media (max-width: 900px) {
         :root {
-            --glazerecipes-frame-height: 5650px;
+            --glazerecipes-frame-height: 5300px;
         }
     }
 
     @media (max-width: 640px) {
         :root {
-            --glazerecipes-frame-height: 6200px;
+            --glazerecipes-frame-height: 4650px;
         }
     }
 
